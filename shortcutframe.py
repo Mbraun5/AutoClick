@@ -22,14 +22,30 @@ class ShortcutFrame(tk.Frame):
         self.getPositionText = tk.Text(self.bodyFrame, state="disabled", width=15, height=1, borderwidth=2,
                                        relief='groove')
         self.getPositionText.grid(row=1, column=1, padx=10, pady=5)
+        self.getPositionTextTwo = tk.Text(self.bodyFrame, state="disabled", width=15, height=1, borderwidth=2,
+                                          relief='groove')
+        self.getPositionTextTwo.grid(row=1, column=1, padx=10, pady=5)
+        self.getPositionTextTwo.grid_remove()
+
         self.startStopText = tk.Text(self.bodyFrame, state="disabled", width=15, height=1, borderwidth=2,
                                      relief='groove')
         self.startStopText.grid(row=2, column=1, padx=10, pady=5)
+        self.startStopTextTwo = tk.Text(self.bodyFrame, state="disabled", width=15, height=1, borderwidth=2,
+                                        relief='groove')
+        self.startStopTextTwo.grid(row=2, column=1, padx=10, pady=5)
+        self.startStopTextTwo.grid_remove()
+
         self.getPositionText.tag_config("justify", justify='center')
+        self.getPositionTextTwo.tag_config("justify", justify='center')
         self.startStopText.tag_config("justify", justify='center')
+        self.startStopTextTwo.tag_config("justify", justify='center')
         keyboard.on_press(self.handle_press)
         self.textDict = {self.getPositionText: 'None',
                          self.startStopText: 'None'}
+        self.textMap = {self.getPositionText: self.getPositionTextTwo,
+                        self.getPositionTextTwo: self.getPositionText,
+                        self.startStopText: self.startStopTextTwo,
+                        self.startStopTextTwo: self.startStopText}
 
         self.getPositionAssign = tk.Button(self.bodyFrame, text="Assign", width=10, borderwidth=1,
                                            command=lambda: print("PositionAssign"))
@@ -46,26 +62,32 @@ class ShortcutFrame(tk.Frame):
 
     def handle_press(self, key):
         widget = self.master.focus_displayof()
-        if widget == self.getPositionText:
+        if widget == self.getPositionText or widget == self.getPositionTextTwo:
             if self.textDict[self.startStopText] == key.name:
                 return
-            widget.config(state='normal')
-            widget.delete(1.0, 'end')
-            widget.insert('end', key.name, "justify")
-            widget.config(state='disabled')
             self.textDict[self.getPositionText] = key.name
-        elif widget == self.startStopText:
+        elif widget == self.startStopText or widget == self.startStopTextTwo:
             if self.textDict[self.getPositionText] == key.name:
                 return
-            widget.config(state='normal')
-            widget.delete(1.0, 'end')
-            widget.insert('end', key.name, "justify")
-            widget.config(state='disabled')
             self.textDict[self.startStopText] = key.name
-        self.master.focus()
+        else:
+            return
+        try:
+            self.textMap[widget].config(state='normal')
+            self.textMap[widget].delete(1.0, 'end')
+            self.textMap[widget].insert('end', key.name, "justify")
+            self.textMap[widget].config(state='disabled')
+            widget.grid_remove()
+            self.textMap[widget].grid()
+        except Exception as e:
+            print(e)
 
     def clear(self, text):
         text.config(state='normal')
         text.delete(1.0, 'end')
+        text.insert('end', 'None', "justify")
         text.config(state='disabled')
+        text.grid()
+        self.textMap[text].grid_remove()
         self.textDict[text] = 'None'
+        self.master.focus()
