@@ -37,7 +37,8 @@ class Menu(tk.Frame):
         self.num_elements += 1
 
     def post(self, pad):
-        self.grid(row=1, column=0, sticky="w", padx=pad)
+        self.grid(row=1, column=0, sticky="nw", padx=pad)
+        self.tkraise()
         self.activeIndex = -1
 
     def unpost(self):

@@ -23,10 +23,10 @@ class NavBar(tk.Frame):
                              'fg': '#F9DC5C'
                              }
 
-        self.fileMenu = m.Menu(self, self.passiveConfig['bg'], self.passiveConfig['fg'], self.activeConfig['bg'],
-                               self.activeConfig['fg'])
         self.fileButton = tk.Button(self, text="File", underline=0, borderwidth=0, **self.passiveConfig)
         self.fileButton.pack(side='left')
+        self.fileMenu = m.Menu(self.master, self.passiveConfig['bg'], self.passiveConfig['fg'], self.activeConfig['bg'],
+                               self.activeConfig['fg'])
         self.fileMenu.add_command(label="New Script", command=lambda: self.placeholder(self.fileMenu, "New Script"))
         self.fileMenu.add_command(label="Save Script", command=lambda: self.placeholder(self.fileMenu, "Save Script"))
         self.fileMenu.add_command(label="Save As", command=lambda: self.placeholder(self.fileMenu, "Save As"))
@@ -35,13 +35,13 @@ class NavBar(tk.Frame):
 
         self.editButton = tk.Button(self, text="Edit", underline=0, borderwidth=0, **self.passiveConfig)
         self.editButton.pack(side='left')
-        self.editMenu = m.Menu(self, self.passiveConfig['bg'], self.passiveConfig['fg'], self.activeConfig['bg'],
+        self.editMenu = m.Menu(self.master, self.passiveConfig['bg'], self.passiveConfig['fg'], self.activeConfig['bg'],
                                self.activeConfig['fg'])
         self.editMenu.add_command(label='Placeholder', command=lambda: self.placeholder(self.editMenu, "Placeholder"))
 
         self.viewButton = tk.Button(self, text="View", underline=0, borderwidth=0, **self.passiveConfig)
         self.viewButton.pack(side='left')
-        self.viewMenu = m.Menu(self, self.passiveConfig['bg'], self.passiveConfig['fg'], self.activeConfig['bg'],
+        self.viewMenu = m.Menu(self.master, self.passiveConfig['bg'], self.passiveConfig['fg'], self.activeConfig['bg'],
                                self.activeConfig['fg'])
         self.viewMenu.add_command(label="Placeholder", command=lambda: self.placeholder(self.viewMenu, "Placeholder"))
 
@@ -74,6 +74,8 @@ class NavBar(tk.Frame):
                     self.activeMenu.unpost()
             else:
                 self.ignoreAltEvent = False
+        elif self.activeButton is None:
+            return
         elif event.keycode == 37:
             self.change_menu("left")
         elif event.keycode == 38:
@@ -107,7 +109,7 @@ class NavBar(tk.Frame):
     def buttonevent(self, event):
         x, y = pag.position()
         widget = self.winfo_containing(x, y)
-        if isinstance(widget, tk.Button) and self.activeButton is None:
+        if isinstance(widget, tk.Button) and self.activeButton is None and isinstance(widget.master, NavBar):
             widget.configure(**self.activeConfig)
             self.activeButton = widget
             self.activeMenu = self.menuDict[widget]

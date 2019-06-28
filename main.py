@@ -2,14 +2,18 @@ import pyautogui as pag
 import tkinter as tk
 import time as t
 import navbar as nav
+import shortcutframe as sf
+import keyboard
 
 
 class Main(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         self.configure(background='#465362')
-        self.navbar = nav.NavBar(self, bg='blue')
+        self.navbar = nav.NavBar(self)
         self.navbar.grid(row=0, column=0, sticky='ew')
+        self.shortcut_frame = sf.ShortcutFrame(self)
+        self.shortcut_frame.grid(row=1, column=0, sticky='n')
         self.grid_columnconfigure(0, weight=1)
 
         self.bind('<Alt_L>f', self.navbar.keyevent)
@@ -18,42 +22,12 @@ class Main(tk.Tk):
         self.bind('<KeyRelease>', self.navbar.altevent)
         self.bind('<ButtonRelease-1>', self.navbar.buttonevent)
 
+        self.lastKey = None
+
 
 if __name__ == "__main__":
     root = Main()
+    root.geometry('500x300+{}+{}'.format(int(pag.size()[0] / 2 - 500/2), int(pag.size()[1] / 2 - 350/2)))
+    root.minsize(250, 0)
     root.title('Automation')
     root.mainloop()
-
-    '''
-
-    #self.bind('g', lambda event: self.test(event))
-    @staticmethod
-    def test(event):
-        print("here")
-        pag.keyDown('alt')
-        pag.keyDown('f', 0.1)
-        pag.keyUp('f', 0.05)
-        pag.keyUp('alt', 0.05)
-
-    screenWidth, screenHeight = pyautogui.size()
-    pyautogui.moveTo(screenWidth / 2, screenHeight / 2)
-    #pyautogui.moveTo(1900, 1080)
-    print(screenWidth, screenHeight)
-    print(pyautogui.KEYBOARD_KEYS)
-    pyautogui.hotkey('')
-    #ha = pyautogui.alert(text='HEY', title='hmm', button='ok')
-    #print(ha)
-    #x, y = pyautogui.locateCenterOnScreen('test.png')
-    #print(x, y)
-    #pyautogui.moveTo(x, y)
-    time.sleep(2)
-
-    distance = 200
-    while distance > 0:
-        pyautogui.dragRel(distance, 0, duration=0.0001)   # move right
-        distance -= 5
-        pyautogui.dragRel(0, distance, duration=0.0001)   # move down
-        pyautogui.dragRel(-distance, 0, duration=0.0001)  # move left
-        distance -= 5
-        pyautogui.dragRel(0, -distance, duration=0.0001)  # move up
-    '''
