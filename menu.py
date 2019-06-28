@@ -25,7 +25,7 @@ class Menu(tk.Frame):
         newButton = tk.Button(self, text=label, command=command, borderwidth=0, **self.passiveConfig, justify='left',
                               anchor='w', padx=5)
         newButton.bind('<Enter>', lambda _: self.hover_on(newButton))
-        newButton.bind('<Leave>', lambda _: self.hover_off(newButton))
+        newButton.bind('<Leave>', lambda _: self.hover_off())
         newButton.grid(row=self.num_elements, column=0, sticky='we')
         self.num_elements += 1
         self.command_list.append(newButton)
@@ -50,9 +50,10 @@ class Menu(tk.Frame):
             self.command_list[self.activeIndex].config(**self.passiveConfig)
         self.activeIndex = self.command_list.index(button)
 
-    def hover_off(self, button):
-        button.config(**self.passiveConfig)
-        self.activeIndex = -1
+    def hover_off(self):
+        if self.activeIndex != -1 and self.activeIndex is not None:
+            self.command_list[self.activeIndex].config(**self.passiveConfig)
+            self.activeIndex = -1
 
     def change_index(self, direction):
         if direction == "up":

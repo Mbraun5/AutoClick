@@ -116,6 +116,7 @@ class NavBar(tk.Frame):
         else:
             if self.activeButton is not None:
                 self.activeButton.config(**self.passiveConfig)
+                self.menuDict[self.activeButton].hover_off()
                 self.menuDict[self.activeButton].unpost()
                 self.activeButton = None
 
@@ -143,5 +144,5 @@ class NavBar(tk.Frame):
         x, y = pag.position()
         widget = self.winfo_containing(x, y)
         print("You clicked {}".format(button))
-        menu.hover_off(widget)
-        menu.unpost()
+        # menu.hover_off()
+        # menu.unpost()
