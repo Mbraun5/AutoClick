@@ -22,7 +22,12 @@ class Main(tk.Tk):
         self.bind('<Alt_L>e', self.navbar.keyevent)
         self.bind('<Alt_L>v', self.navbar.keyevent)
         self.bind('<KeyRelease>', self.navbar.altevent)
-        self.bind('<ButtonRelease-1>', self.navbar.buttonevent)
+        self.bind('<ButtonRelease-1>', self.button_event)
+
+    def button_event(self, event):
+        self.navbar.button_event()
+        self.shortcut_frame.button_event()
+        del event
 
 
 if __name__ == "__main__":
