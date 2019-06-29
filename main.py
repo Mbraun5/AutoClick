@@ -3,6 +3,8 @@ import tkinter as tk
 import time as t
 import navbar as nav
 import shortcutframe as sf
+import footer as f
+import newactionframe as naf
 import keyboard
 
 
@@ -11,12 +13,16 @@ class Main(tk.Tk):
         tk.Tk.__init__(self)
         self.configure(background='#465362')
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(2, weight=1)
 
         self.navbar = nav.NavBar(self)
-        self.navbar.grid(row=0, column=0, sticky='ew')
+        self.navbar.grid(row=0, column=0, sticky='new')
 
         self.shortcut_frame = sf.ShortcutFrame(self)
-        self.shortcut_frame.grid(row=1, column=0, sticky='n')
+        self.shortcut_frame.grid(row=2, column=0, sticky='sew')
+
+        self.footer = f.Footer(self)
+        self.footer.grid(row=3, column=0, sticky='sew')
 
         self.bind('<Alt_L>f', self.navbar.keyevent)
         self.bind('<Alt_L>e', self.navbar.keyevent)

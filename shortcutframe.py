@@ -21,10 +21,6 @@ class ShortcutFrame(tk.Frame):
         self.startStopLabel = tk.Label(self.bodyFrame, text="Start / Stop Script Execution:", font=('Helvetica', '9'))
         self.startStopLabel.grid(row=2, column=0, padx=10, sticky='e')
 
-        self.textConfig = {'highlightthickness': 3,
-                           'highlightcolor': '#058C42',
-                           'highlightbackground': '#0E2B41',
-                           'state': 'disabled'}
         self.getPositionText = tk.Text(self.bodyFrame, width=15, height=1, borderwidth=2, relief='groove')
         self.text_config(self.getPositionText)
         self.getPositionText.grid(row=1, column=1, padx=10, pady=5)
@@ -66,7 +62,7 @@ class ShortcutFrame(tk.Frame):
                                         command=lambda: self.clear(self.startStopText))
         self.startStopClear.grid(row=2, column=3, padx=10)
 
-        self.conf()
+        self.config()
 
     def handle_press(self, key):
         widget = self.master.focus_displayof()
@@ -83,7 +79,7 @@ class ShortcutFrame(tk.Frame):
         try:
             self.textMap[widget].config(state='normal')
             self.textMap[widget].delete(1.0, 'end')
-            self.textMap[widget].insert('end', key.name, "justify")
+            self.textMap[widget].insert('end', key.name, 'justify')
             self.textMap[widget].config(state='disabled')
             widget.grid_remove()
             self.textMap[widget].grid()
@@ -91,14 +87,27 @@ class ShortcutFrame(tk.Frame):
         except Exception as e:
             print(e)
 
+    def lose_focus(self, text):
+        text.config(state='normal')
+        text.delete(1.0, 'end')
+        try:
+            text.insert('end', '{}'.format(self.assignMap[text]), 'justify')
+            if self.master.focus_displayof() != self.textMap[text]:
+                self.textDict[text] = self.assignMap[text]
+        except KeyError:
+            text.insert('end', '{}'.format(self.assignMap[self.textMap[text]]), 'justify')
+            if self.master.focus_displayof() != self.textMap[text]:
+                self.textDict[self.textMap[text]] = self.assignMap[self.textMap[text]]
+        text.config(state='disabled')
+
     def assign(self, text):
         self.assignMap[text] = self.textDict[text]
-        self.master.focus()
+        self.focus()
 
     def clear(self, text):
         text.config(state='normal')
         text.delete(1.0, 'end')
-        text.insert('end', 'None', "justify")
+        text.insert('end', 'None', 'justify')
         text.config(state='disabled')
         text.grid()
         self.textMap[text].grid_remove()
@@ -113,7 +122,7 @@ class ShortcutFrame(tk.Frame):
             widget.focus()
 
     # 465362
-    def conf(self):
+    def config(self):
         self['bg'] = '#0E2B41'
         self.bodyFrame['bg'] = '#0E2B41'
 
@@ -142,6 +151,11 @@ class ShortcutFrame(tk.Frame):
         self.startStopClear['fg'] = '#F4FFFD'
 
     def text_config(self, widget):
-        widget.tag_config("justify", justify='center')
-        widget.insert('end', 'None', "justify")
-        widget.config(**self.textConfig)
+        config = {'highlightthickness': 3,
+                  'highlightcolor': '#058C42',
+                  'highlightbackground': '#0E2B41',
+                  'state': 'disabled'}
+        widget.tag_config('justify', justify='center')
+        widget.insert('end', 'None', 'justify')
+        widget.config(**config)
+        widget.bind("<FocusOut>", lambda _: self.lose_focus(widget))
