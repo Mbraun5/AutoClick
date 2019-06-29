@@ -18,6 +18,9 @@ class Main(tk.Tk):
         self.navbar = nav.NavBar(self)
         self.navbar.grid(row=0, column=0, sticky='new')
 
+        self.newActionFrame = naf.NewActionFrame(self)
+        self.newActionFrame.grid(row=1, column=0, sticky='new')
+
         self.shortcut_frame = sf.ShortcutFrame(self)
         self.shortcut_frame.grid(row=2, column=0, sticky='sew')
 

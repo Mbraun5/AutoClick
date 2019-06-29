@@ -9,8 +9,13 @@ class Footer(tk.Frame):
         self.master = master
 
         self.footer_text = tk.Label(self, height=1, bg='#011936', fg='#F4FFFD', font=('Helvetica', '8'))
-        self.fill_footer()
         self.footer_text.pack(side='left')
+
+        self.screenInfo = tk.Label(self, height=1, bg='#011936', fg='#F4FFFD', font=('Helvetica', '8'))
+        self.screenInfo.pack(side='right')
+        self.screenInfo.config(text='Screen Resolution: {}x{}'.format(pag.size()[0], pag.size()[1]))
+
+        self.fill_footer()
 
     def fill_footer(self):
         self.footer_text.config(text='Mouse Cursor Location: X = {}, Y = {}'.format(pag.position()[0],
