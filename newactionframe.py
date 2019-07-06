@@ -2,7 +2,7 @@ import pyautogui as pag
 import tkinter as tk
 import optionmenu as om
 import checkbox as cb
-import menu as m
+import optionschoicemenu as ocm
 
 
 class NewActionFrame(tk.Frame):
@@ -39,7 +39,8 @@ class NewActionFrame(tk.Frame):
         self.yEntry.bind("<FocusOut>", lambda _: self.check_entry(self.yEntry, pag.size()[1]))
 
         self.resetButton = tk.Button(self.addFrame, text='Reset', font=('Helvetica', '7'), image=self.pixel,
-                                     borderwidth=1, relief='flat', width=65, height=13, compound='center')
+                                     borderwidth=1, relief='flat', width=65, height=13, compound='center',
+                                     command=lambda: print("hey"))
         self.resetButton.grid(row=0, column=4, padx=5, sticky='w')
 
         self.actionLabel = tk.Label(self.addFrame, text="Action Type:")
@@ -52,19 +53,20 @@ class NewActionFrame(tk.Frame):
                               'fg': '#F4FFFD'
                               }
 
+        self.optionsChoiceButton = tk.Button(self.addFrame, text=' ... ', font=('Helvetica', '7'), image=self.pixel,
+                                             borderwidth=1, relief='flat', width=65, height=13, compound='center',
+                                             command=self.create_choice_menu)
+        self.optionsChoiceButton.grid(row=1, column=4, padx=5, pady=(2, 2), sticky='w')
+        self.optionsChoiceMenuValues = 'default'
+
         self.optionButton = tk.Button(self.addFrame, text="           -- select an action --          " + u"\u2b9f",
                                       font=('Helvetica', '9'), image=self.pixel, width=219, height=13,
                                       compound='center', command=self.post_option_menu, borderwidth=1, relief='flat')
         self.optionButton.grid(row=1, column=1, columnspan=3, padx=5, pady=(2, 2), sticky='ew')
 
-        self.optionMenu = om.OptionMenu(self.master, '#000F08', '#F4FFFD', '#092327', '#86E7B8')
         self.optionMenuActive = False
         self.ignoreEvent = False
-        #self.optionMenu = om.OptionMenu(self.master)
-
-        self.optionsChoiceButton = tk.Button(self.addFrame, text=' ... ', font=('Helvetica', '7'), image=self.pixel,
-                                             borderwidth=1, relief='flat', width=65, height=13, compound='center')
-        self.optionsChoiceButton.grid(row=1, column=4, padx=5, pady=(2, 2), sticky='w')
+        self.optionMenu = om.OptionMenu(self.master, '#000F08', '#F4FFFD', '#092327', '#86E7B8')
 
         self.checkLabel = tk.Label(self.addFrame, text='Cursor back:')
         self.checkLabel.grid(row=2, column=0, padx=5, pady=(2, 2), sticky='e')
@@ -131,32 +133,6 @@ class NewActionFrame(tk.Frame):
                         self.optionButton]
 
         self.config()
-    '''
-    def button_event(self):
-        x, y = pag.position()
-        widget = self.winfo_containing(x, y)
-        if self.optionMenuActive and widget != self.optionMenu and not self.ignoreEvent:
-            self.unpost_option_menu()
-        elif self.optionMenuActive and widget != self.optionMenu:
-            self.ignoreEvent = False
-        if widget.master == self.addFrame or widget.master == self.titleFrame:
-            if not isinstance(widget, tk.Entry):
-                self.master.focus_set()
-
-    def key_event(self, event):
-        if event.keycode == 18:
-            self.unpost_option_menu()
-        self.optionMenu.mouse_wheel(event)
-
-    def post_option_menu(self):
-        self.optionMenu.post(98, 74)
-        self.optionMenuActive = True
-        self.ignoreEvent = True
-
-    def unpost_option_menu(self):
-        self.optionMenu.unpost()
-        self.optionMenuActive = False
-    '''
 
     @staticmethod
     def callback(p):
@@ -203,7 +179,6 @@ class NewActionFrame(tk.Frame):
         x, y = pag.position()
         widget = self.winfo_containing(x, y)
         if self.optionMenuActive and widget != self.optionMenu and not self.ignoreEvent:
-            print("here")
             self.optionMenu.unpost()
             self.optionMenuActive = False
         elif self.optionMenuActive and widget != self.optionMenu:
@@ -232,3 +207,8 @@ class NewActionFrame(tk.Frame):
             self.optionMenu.post(98, 74)
             self.optionMenuActive = True
             self.ignoreEvent = True
+
+    def create_choice_menu(self):
+        x = self.master.winfo_x() + int(self.master.winfo_width() / 3)
+        y = self.master.winfo_y() + int(self.master.winfo_height() / 3)
+        optionsChoiceMenu = ocm.OptionsChoiceMenu(self, x, y)

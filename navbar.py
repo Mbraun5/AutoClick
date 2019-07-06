@@ -8,9 +8,6 @@ class NavBar(tk.Frame):
         tk.Frame.__init__(self, *args, **kwargs)
         self.master = master
 
-        # SystemButtonText - Fg
-        # SystemButtonFace - Bg
-        # 323334 metallic black
         self.config(bg='#011936')
         self.passiveConfig = {'bg': '#011936',
                               'fg': '#F4FFFD',

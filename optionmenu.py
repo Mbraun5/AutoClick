@@ -1,58 +1,10 @@
 import tkinter as tk
-import menu as m
-
-
-'''
-class OptionMenu(tk.Frame):
-    def __init__(self, master, *args, **kwargs):
-        tk.Frame.__init__(self, master, *args, **kwargs)
-        self.master = master
-
-        self.scrollbar = tk.Scrollbar(self, command=self.on_vsb, orient='vertical')
-        self.scrollbar.pack(side='right', expand=True, fill='y')
-        self.listbox = tk.Listbox(self, yscrollcommand=self.scrollbar.set, width=35)
-        self.listbox.pack(side='left')
-
-        self.listbox.bind("<MouseWheel>", self.mouse_wheel)
-
-        self.add_parameters()
-        self.config()
-
-    def on_vsb(self, *args):
-        self.listbox.yview(*args)
-
-    def mouse_wheel(self, event):
-        if event.keycode == 38:
-            delta = -1
-        elif event.keycode == 40:
-            delta = 1
-        else:
-            delta = int(event.delta / 120)
-        self.listbox.yview("scroll", delta, "units")
-
-    def config(self):
-        config = {'background': '#000F08',
-                  'foreground': '#F4FFFD',
-                  'font': ('Helvetica', '9'),
-                  'borderwidth': 0,
-                  }
-        self.listbox.config(config)
-
-    def post(self, x, y):
-        self.grid(row=1, column=0, sticky='nw', padx=x, pady=y)
-
-    def unpost(self):
-        self.grid_remove()
-
-    def add_parameters(self):
-        for i in range(20):
-            self.listbox.insert('end', 'haha{}'.format(i))
-    '''
 
 
 class OptionMenu(tk.Canvas):
     def __init__(self, *args, **kwargs):
-        tk.Canvas.__init__(self)
+        tk.Canvas.__init__(self, **kwargs)
+        self.master = args[0]
         self.passiveConfig = {'bg': args[1],
                               'fg': args[2],
                               'activebackground': args[1],
@@ -69,18 +21,18 @@ class OptionMenu(tk.Canvas):
         self.command_list = []
         self.num_elements = 0
         self.activeIndex = None
-        self.config(height=100, width=226)
+        self.config(height=190, width=226)
         self.pack_propagate(False)
         self.btnFrame = tk.Frame(self)
         self.create_window((0, 0), window=self.btnFrame, anchor='nw')
         self.scrllbar = tk.Scrollbar(self, orient='vertical')
         self.bind('<Configure>', self.on_configure)
         self.pixel = tk.PhotoImage(height=1, width=1)
-        self.add_options()
 
     def add_command(self, label=None, command=None):
-        newButton = tk.Button(self.btnFrame, text=label, command=command, borderwidth=0, image=self.pixel, **self.passiveConfig, justify='center',
-                              anchor='w', padx=5, width=219, height=20, compound='center')
+        newButton = tk.Button(self.btnFrame, text=label, command=command, borderwidth=0, image=self.pixel,
+                              **self.passiveConfig, justify='center', anchor='w', padx=5, width=219, height=20,
+                              compound='center')
         newButton.bind('<Enter>', lambda _: self.hover_on(newButton))
         newButton.bind('<Leave>', lambda _: self.hover_off())
         newButton.bind('<MouseWheel>', self.mouse_wheel)
@@ -152,4 +104,28 @@ class OptionMenu(tk.Canvas):
         self.configure(scrollregion=self.bbox('all'))
 
     def add_options(self):
-        pass
+        if self.master.newActionFrame.optionsChoiceMenuValues == 'default':
+            values = ['Left Click',
+                      'Ctrl + Click',
+                      'Shift + Click',
+                      'Alt + Click',
+                      'Ctrl + Alt + Click',
+                      'Middle Click',
+                      'Right Click',
+                      'Ctrl + Right Click',
+                      'Alt + Right Click',
+                      'Ctrl + Alt + Right Click',
+                      'Double Click',
+                      'Double Right Click',
+                      'Begin Dragging - Left Click Down',
+                      'End Dragging - Left Click Up',
+                      'Move Mouse',
+                      'Move Mouse By Offset',
+                      'Press Keyboard Key',
+                      'Release Keyboard Key',
+                      'Press Spacebar']
+            for value in values:
+                self.add_command(value, command=None)
+        else:
+            for value in self.master.newActionFrame.optionsChoiceMenuValues:
+                self.add_command(value, command=None)

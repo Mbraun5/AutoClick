@@ -7,12 +7,13 @@ class CheckBox(tk.Button):
         self.master = master
 
         self.checked = False
-        self.bind("<Button-1>", lambda _: self.switch(_))
+        self.bind("<Button-1>", lambda _: self.switch())
+        self.config(font=('Helvetica', '11', 'bold'), text='.', foreground='#FFFFFF')
 
-    def switch(self, event):
-        if self.checked is False:
+    def switch(self):
+        if not self.checked:
+            self.config(font=('Helvetica', '7', 'bold'), text=u'\u2713', foreground='#000000')
             self.checked = True
-            self['text'] = u'\u2713'
         else:
+            self.config(font=('Helvetica', '11', 'bold'), text='.', foreground='#FFFFFF')
             self.checked = False
-            self['text'] = ''
