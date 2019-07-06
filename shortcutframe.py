@@ -5,7 +5,7 @@ import pyautogui as pag
 
 class ShortcutFrame(tk.Frame):
     def __init__(self, master, *args, **kwargs):
-        tk.Frame.__init__(self)
+        tk.Frame.__init__(self, *args, **kwargs)
         self.master = master
 
         self.titleFrame = tk.Frame(self)
@@ -13,12 +13,13 @@ class ShortcutFrame(tk.Frame):
         self.bodyFrame = tk.Frame(self)
         self.bodyFrame.pack()
 
-        self.configLabel = tk.Label(self.titleFrame, text="Configure Global Keyboard Shortcuts",
-                                    font=('Helvetica', '11', 'bold'))
+        self.configLabel = tk.Label(self.titleFrame, text="Configure Global Keyboard Shortcuts")
         self.configLabel.pack()
-        self.getPositionLabel = tk.Label(self.bodyFrame, text="Get Mouse Cursor Position:", font=('Helvetica', '9'))
+
+        self.getPositionLabel = tk.Label(self.bodyFrame, text="Get Mouse Cursor Position:")
         self.getPositionLabel.grid(row=1, column=0, padx=10, sticky='e')
-        self.startStopLabel = tk.Label(self.bodyFrame, text="Start / Stop Script Execution:", font=('Helvetica', '9'))
+
+        self.startStopLabel = tk.Label(self.bodyFrame, text="Start / Stop Script Execution:")
         self.startStopLabel.grid(row=2, column=0, padx=10, sticky='e')
 
         self.getPositionText = tk.Text(self.bodyFrame, width=15, height=1, borderwidth=2, relief='groove')
@@ -61,6 +62,14 @@ class ShortcutFrame(tk.Frame):
         self.startStopClear = tk.Button(self.bodyFrame, text="Clear", width=10, borderwidth=1,
                                         command=lambda: self.clear(self.startStopText))
         self.startStopClear.grid(row=2, column=3, padx=10)
+
+        self.labels = [self.configLabel,
+                       self.getPositionLabel,
+                       self.startStopLabel]
+        self.buttons = [self.getPositionAssign,
+                        self.getPositionClear,
+                        self.startStopAssign,
+                        self.startStopClear]
 
         self.config()
 
@@ -126,29 +135,22 @@ class ShortcutFrame(tk.Frame):
         self['bg'] = '#0E2B41'
         self.bodyFrame['bg'] = '#0E2B41'
 
-        # self['bg'] = '#465362'
-        # self.bodyFrame['bg'] = '#465362'
+        config = {'bg': '#0E2B41',
+                  'fg': '#F4FFFD',
+                  'font': ('Helvetica', '9')
+                  }
+        for label in self.labels:
+            label.config(config)
+        self.configLabel.config(font=('Helvetica', '11', 'bold'))
 
-        # self.configLabel['bg'] = '#465362'
-        self.configLabel['bg'] = '#0E2B41'
-        self.configLabel['fg'] = '#F4FFFD'
-
-        # self.getPositionLabel['bg'] = '#465362'
-        self.getPositionLabel['bg'] = '#0E2B41'
-        self.getPositionLabel['fg'] = '#F4FFFD'
-        # self.startStopLabel['bg'] = '#465362'
-        self.startStopLabel['bg'] = '#0E2B41'
-        self.startStopLabel['fg'] = '#F4FFFD'
-
-        self.getPositionAssign['bg'] = '#000F08'
-        self.getPositionAssign['fg'] = '#F4FFFD'
-        self.startStopAssign['bg'] = '#000F08'
-        self.startStopAssign['fg'] = '#F4FFFD'
-
-        self.getPositionClear['bg'] = '#000F08'
-        self.getPositionClear['fg'] = '#F4FFFD'
-        self.startStopClear['bg'] = '#000F08'
-        self.startStopClear['fg'] = '#F4FFFD'
+        config = {'bg': '#000F08',
+                  'fg': '#F4FFFD',
+                  'borderwidth': 1,
+                  'activebackground': '#092327',
+                  'activeforeground': '#86E7B8'
+                  }
+        for button in self.buttons:
+            button.config(config)
 
     def text_config(self, widget):
         config = {'highlightthickness': 3,

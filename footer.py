@@ -4,7 +4,7 @@ import pyautogui as pag
 
 class Footer(tk.Frame):
     def __init__(self, master, *args, **kwargs):
-        tk.Frame.__init__(self)
+        tk.Frame.__init__(self, *args, **kwargs)
         self.configure(background='#011936', height=20)
         self.master = master
 

@@ -3,7 +3,7 @@ import tkinter as tk
 
 class CheckBox(tk.Button):
     def __init__(self, master, *args, **kwargs):
-        tk.Button.__init__(self, master, **kwargs)
+        tk.Button.__init__(self, master, *args, **kwargs)
         self.master = master
 
         self.checked = False

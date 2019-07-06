@@ -63,7 +63,7 @@ class NavBar(tk.Frame):
 
     def post(self, button, menu):
         button.config(**self.activeConfig)
-        menu.post(self.menuPad[menu])
+        menu.post(self.menuPad[menu], 0)
 
     def altevent(self, event):
         if event.keycode == 18:
@@ -146,5 +146,3 @@ class NavBar(tk.Frame):
         x, y = pag.position()
         widget = self.winfo_containing(x, y)
         print("You clicked {}".format(button))
-        # menu.hover_off()
-        # menu.unpost()

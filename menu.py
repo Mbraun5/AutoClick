@@ -3,7 +3,7 @@ import tkinter as tk
 
 class Menu(tk.Frame):
     def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, **kwargs)
+        tk.Frame.__init__(self)
         self.passiveConfig = {'bg': args[1],
                               'fg': args[2],
                               'activebackground': args[1],
@@ -14,9 +14,6 @@ class Menu(tk.Frame):
                               'activebackground': args[3],
                               'activeforeground': args[4]
                              }
-        self['bg'] = self.passiveConfig['bg']
-        self['highlightbackground'] = '#404040'
-        self['highlightthickness'] = 1
         self.command_list = []
         self.num_elements = 0
         self.activeIndex = None
@@ -36,8 +33,8 @@ class Menu(tk.Frame):
         newButton.grid(row=self.num_elements, column=0, sticky='we')
         self.num_elements += 1
 
-    def post(self, pad):
-        self.grid(row=1, column=0, sticky="nw", padx=pad)
+    def post(self, padx, pady):
+        self.grid(row=1, column=0, sticky="nw", padx=padx, pady=pady)
         self.tkraise()
         self.activeIndex = -1
 
@@ -48,7 +45,11 @@ class Menu(tk.Frame):
     def hover_on(self, button):
         button.config(**self.activeConfig)
         if self.activeIndex != -1:
-            self.command_list[self.activeIndex].config(**self.passiveConfig)
+            try:
+                self.command_list[self.activeIndex].config(**self.passiveConfig)
+            except TypeError:
+                for btn in self.command_list:
+                    btn.config(**self.passiveConfig)
         self.activeIndex = self.command_list.index(button)
 
     def hover_off(self):
