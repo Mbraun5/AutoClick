@@ -26,12 +26,13 @@ class OptionMenu(tk.Canvas):
         self.btnFrame = tk.Frame(self)
         self.create_window((0, 0), window=self.btnFrame, anchor='nw')
         self.scrllbar = tk.Scrollbar(self, orient='vertical')
+        self.configure(yscrollcommand=self.scrllbar.set)
         self.bind('<Configure>', self.on_configure)
         self.pixel = tk.PhotoImage(height=1, width=1)
 
     def add_command(self, label=None, command=None):
         newButton = tk.Button(self.btnFrame, text=label, command=command, borderwidth=0, image=self.pixel,
-                              **self.passiveConfig, justify='center', anchor='w', padx=5, width=219, height=20,
+                              **self.passiveConfig, justify='center', anchor='w', padx=5, width=219, height=19,
                               compound='center')
         newButton.bind('<Enter>', lambda _: self.hover_on(newButton))
         newButton.bind('<Leave>', lambda _: self.hover_off())
@@ -48,6 +49,7 @@ class OptionMenu(tk.Canvas):
 
     def post(self, padx, pady):
         self.grid(row=1, column=0, sticky="nw", padx=padx, pady=pady)
+        self.yview("scroll", -120, "units")
         tk.Misc.lift(self, aboveThis=None)
         self.activeIndex = -1
 
@@ -89,14 +91,24 @@ class OptionMenu(tk.Canvas):
             self.command_list[self.activeIndex].config(**self.activeConfig)
 
     def mouse_wheel(self, event):
+        if len(self.command_list) < 9:
+            return
         if self.master.newActionFrame.optionMenuActive:
             if event.keycode == 38:
                 self.change_index("up")
-                delta = -2
+                if self.scrllbar.get()[0] <= 0:
+                    delta = 0
+                else:
+                    delta = -2
             elif event.keycode == 40:
                 self.change_index("down")
-                delta = 2
+                if self.scrllbar.get()[1] >= 1:
+                    delta = 0
+                else:
+                    delta = 2
             else:
+                if self.btnFrame.winfo_y() < ((8 - len(self.command_list)) * 21) and event.delta < 0:
+                    return
                 delta = -1 * int(event.delta / 120)
             self.yview("scroll", delta, "units")
 
@@ -104,6 +116,12 @@ class OptionMenu(tk.Canvas):
         self.configure(scrollregion=self.bbox('all'))
 
     def add_options(self):
+        for btn in self.command_list:
+            btn.grid_remove()
+            btn.grid_forget()
+        del self.command_list[:]
+        self.num_elements = 0
+        self.command_list = []
         if self.master.newActionFrame.optionsChoiceMenuValues == 'default':
             values = ['Left Click',
                       'Ctrl + Click',

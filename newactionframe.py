@@ -28,7 +28,7 @@ class NewActionFrame(tk.Frame):
         self.xEntry = tk.Entry(self.addFrame, width=6, font=('Helvetica', '9', 'bold'), validate='all',
                                justify='center', validatecommand=(vcmd, '%P'))
         self.xEntry.grid(row=0, column=1, padx=5, sticky='ew')
-        self.xEntry.bind("<FocusOut>", lambda _:self.check_entry(self.xEntry, pag.size()[0]))
+        self.xEntry.bind("<FocusOut>", lambda _: self.check_entry(self.xEntry, pag.size()[0]))
 
         self.yLabel = tk.Label(self.addFrame, text="Y-Coordinate:")
         self.yLabel.grid(row=0, column=2, padx=5, sticky='e')
@@ -40,7 +40,7 @@ class NewActionFrame(tk.Frame):
 
         self.resetButton = tk.Button(self.addFrame, text='Reset', font=('Helvetica', '7'), image=self.pixel,
                                      borderwidth=1, relief='flat', width=65, height=13, compound='center',
-                                     command=lambda: print("hey"))
+                                     command=self.reset)
         self.resetButton.grid(row=0, column=4, padx=5, sticky='w')
 
         self.actionLabel = tk.Label(self.addFrame, text="Action Type:")
@@ -93,7 +93,7 @@ class NewActionFrame(tk.Frame):
         self.commentEntry.grid(row=3, column=1, columnspan=5, padx=5, pady=(0, 5), sticky='we')
 
         self.clearButton = tk.Button(self.addFrame, text='C', image=self.pixel, height=13, compound='center',
-                                     font=('Helvetica', '9'), relief='flat', borderwidth=1)
+                                     font=('Helvetica', '9'), relief='flat', borderwidth=1, command=self.clear)
         self.clearButton.grid(row=3, column=6, padx=5, pady=(0, 5), sticky='w')
 
         self.addButtonOne = tk.Button(self.addFrame, text='Add to top', image=self.pixel, compound='center',
@@ -131,6 +131,11 @@ class NewActionFrame(tk.Frame):
                         self.resetButton,
                         self.optionsChoiceButton,
                         self.optionButton]
+        self.entries = [self.xEntry,
+                        self.yEntry,
+                        self.delayEntry,
+                        self.commentEntry,
+                        self.repeatEntry]
 
         self.config()
 
@@ -212,3 +217,19 @@ class NewActionFrame(tk.Frame):
         x = self.master.winfo_x() + int(self.master.winfo_width() / 3)
         y = self.master.winfo_y() + int(self.master.winfo_height() / 3)
         optionsChoiceMenu = ocm.OptionsChoiceMenu(self, x, y)
+
+    def reset(self):
+        for entry in self.entries:
+            entry.delete(0, 'end')
+        self.optionButton.config(text="           -- select an action --          " + u"\u2b9f")
+        if self.checkBox.checked:
+            self.checkBox.switch()
+
+    def clear(self):
+        self.commentEntry.delete(0, 'end')
+
+    def set_current_xy(self):
+        self.xEntry.delete(0, 'end')
+        self.xEntry.insert('end', pag.position()[0])
+        self.yEntry.delete(0, 'end')
+        self.yEntry.insert('end', pag.position()[1])

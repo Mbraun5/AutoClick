@@ -147,4 +147,5 @@ class OptionsChoiceMenu(tk.Toplevel):
             if self.checkboxes[i].checked:
                 save_list.append(self.commands[i])
         self.master.optionsChoiceMenuValues = save_list
+        self.master.optionMenu.add_options()
         self.destroy()

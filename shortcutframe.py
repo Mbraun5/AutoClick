@@ -71,9 +71,13 @@ class ShortcutFrame(tk.Frame):
                         self.startStopAssign,
                         self.startStopClear]
 
+        self.kb_map = None
+        self.keybind_map()
         self.config()
 
     def handle_press(self, key):
+        if key.name == self.assignMap[self.getPositionText]:
+            self.master.newActionFrame.set_current_xy()
         widget = self.master.focus_displayof()
         if widget == self.getPositionText or widget == self.getPositionTextTwo:
             if self.textDict[self.startStopText] == key.name:
@@ -161,3 +165,37 @@ class ShortcutFrame(tk.Frame):
         widget.insert('end', 'None', 'justify')
         widget.config(**config)
         widget.bind("<FocusOut>", lambda _: self.lose_focus(widget))
+
+    def keybind_map(self):
+        self.kb_map = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e',
+                       'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j',
+                       'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o',
+                       'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't',
+                       'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y',
+                       'z': 'z', 'caps lock': '<capslock>'}
+
+
+'''
+['\t', '\n', '\r', ' ', '!', '"', '#', '$', '%', '&', "'", '(',
+')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7',
+'8', '9', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`',
+'a', 'b', 'c', 'd', 'e','f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~',
+'accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace',
+'browserback', 'browserfavorites', 'browserforward', 'browserhome',
+'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear',
+'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete',
+'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10',
+'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f2', 'f20',
+'f21', 'f22', 'f23', 'f24', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9',
+'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja',
+'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail',
+'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack',
+'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6',
+'num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn',
+'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn',
+'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator',
+'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab',
+'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen',
+'command', 'option', 'optionleft', 'optionright']
+'''
