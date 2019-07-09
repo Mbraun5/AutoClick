@@ -1,12 +1,12 @@
 import pyautogui as pag
 import tkinter as tk
-import time as t
 import navbar as nav
 import shortcutframe as sf
 import footer as f
 import newactionframe as naf
+from PIL import ImageTk, Image
 import keyboard
-import optionmenuu as om
+import time as t
 
 
 class Main(tk.Tk):
@@ -15,6 +15,11 @@ class Main(tk.Tk):
         self.configure(background='#465362')
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
+
+        img = ImageTk.PhotoImage(Image.open('logo2.png'))
+        self.tk.call('wm', 'iconphoto', self._w, img)
+
+        #self.wm_iconbitmap('logo2.ico')
 
         self.navbar = nav.NavBar(self)
         self.navbar.grid(row=0, column=0, sticky='new')
@@ -62,6 +67,18 @@ class Main(tk.Tk):
 
 
 if __name__ == "__main__":
+    pic = Image.open('icon3.png').convert('RGB')
+    for i in range(48):
+        for j in range(48):
+            try:
+                r, g, b = pic.getpixel((i, j))
+            except:
+                print(i, j)
+                exit()
+            print(r, g, b)
+            if (r, g, b) != (71, 112, 76):
+                pic.putpixel((i, j), (0, 0, 0))
+    pic.save('icon4.png')
     root = Main()
     root.geometry('600x400+{}+{}'.format(int(pag.size()[0] / 2 - 500/2), int(pag.size()[1] / 2 - 350/2)))
     root.minsize(250, 0)

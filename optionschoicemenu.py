@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import pyautogui as pag
 import checkbox as c
 
@@ -146,6 +147,10 @@ class OptionsChoiceMenu(tk.Toplevel):
         for i in range(len(self.commands)):
             if self.checkboxes[i].checked:
                 save_list.append(self.commands[i])
+        if len(save_list) < 1:
+            messagebox.showinfo("Error!", "Please select at least one checkbox parameter.")
+            return
         self.master.optionsChoiceMenuValues = save_list
         self.master.optionMenu.add_options()
+        self.master.reset_option_button()
         self.destroy()

@@ -1,10 +1,11 @@
 import tkinter as tk
 
 
-class OptionMenu(tk.Canvas):
+class OptionMenu(tk.Frame):
     def __init__(self, *args, **kwargs):
-        tk.Canvas.__init__(self, **kwargs)
+        tk.Frame.__init__(self, **kwargs)
         self.master = args[0]
+
         self.passiveConfig = {'bg': args[1],
                               'fg': args[2],
                               'activebackground': args[1],
@@ -20,38 +21,67 @@ class OptionMenu(tk.Canvas):
         self['highlightbackground'] = '#404040'
         self['highlightthickness'] = 1
 
+        self.scrollbar = tk.Scrollbar(self, orient='vertical')
+        #self.scrollbar.pack(fill='y', side='right', expand='false')
+        self.canvas = tk.Canvas(self, bd=0, yscrollcommand=self.scrollbar.set, width=226, height=200,
+                                highlightthickness=0)
+        self.canvas.pack(fill='both', side='left', expand=True)
+        self.scrollbar.config(command=self.canvas.yview)
+
+        self.canvas.xview_moveto(0)
+        self.canvas.yview_moveto(0)
+
+        self.btnFrame = tk.Frame(self.canvas)
+        self.btnFrameWindow = self.canvas.create_window(0, 0, window=self.btnFrame, anchor='nw')
+        self.btnFrame.bind('<Configure>', self.configure_interior_window)
+        self.canvas.bind('<Configure>', self.configure_canvas)
+
         self.command_list = []
         self.num_elements = 0
         self.activeIndex = None
-        self.config(height=400, width=226)
-        self.pack_propagate(False)
-        self.btnFrame = tk.Frame(self)
-        self.create_window((0, 0), window=self.btnFrame, anchor='nw')
-        self.scrllbar = tk.Scrollbar(self, orient='vertical')
-        self.configure(yscrollcommand=self.scrllbar.set)
-        self.bind('<Configure>', self.on_configure)
         self.pixel = tk.PhotoImage(height=1, width=1)
 
-    def add_command(self, label=None, command=None):
-        newButton = tk.Button(self.btnFrame, text=label, command=command, borderwidth=0, image=self.pixel,
-                              **self.passiveConfig, justify='center', anchor='w', padx=5, width=226, height=19,
-                              compound='center')
-        newButton.bind('<Enter>', lambda _: self.hover_on(newButton))
-        newButton.bind('<Leave>', lambda _: self.hover_off())
-        newButton.bind('<MouseWheel>', self.mouse_wheel)
-        newButton.grid(row=self.num_elements, column=0, sticky='we')
+    def configure_interior_window(self, event):
+        size = (self.btnFrame.winfo_reqwidth(), self.btnFrame.winfo_reqheight())
+        self.canvas.config(scrollregion='0 0 %s %s' % size)
+        self.btnFrame.bind('<Configure>', self.configure_interior_window)
+
+    def configure_canvas(self, event):
+        if self.btnFrame.winfo_reqwidth() != self.canvas.winfo_reqwidth():
+            self.canvas.itemconfigure(self.btnFrameWindow, width=self.canvas.winfo_width())
+        self.canvas.bind('<Configure>', self.configure_canvas)
+
+    def mouse_event(self, event):
+        if self.winfo_reqheight() < self.canvas.winfo_reqheight():
+            return
+        delta = -1 * int(event.delta / 120)
+        self.canvas.yview("scroll", delta, "units")
+
+    def add_command(self, label):
+        new_button = tk.Button(self.btnFrame, text=label, borderwidth=0, image=self.pixel, **self.passiveConfig,
+                               justify='center', anchor='w', padx=5, width=226, height=19, compound='center',
+                               command=lambda: self.master.newActionFrame.set_option_button(label))
+        new_button.bind('<Enter>', lambda _: self.hover_on(new_button))
+        new_button.bind('<Leave>', lambda _: self.hover_off())
+        new_button.bind('<MouseWheel>', self.mouse_event)
+        new_button.grid(row=self.num_elements, column=0, sticky='we')
         self.num_elements += 1
-        self.command_list.append(newButton)
+        self.command_list.append(new_button)
 
     def add_separator(self):
-        newButton = tk.Button(self, text='-' * 100, state='disabled', borderwidth=0, **self.passiveConfig, anchor='w',
-                              font="Helvetica 2", justify='left')
-        newButton.grid(row=self.num_elements, column=0, sticky='we')
+        new_button = tk.Button(self, text='-' * 100, state='disabled', borderwidth=0, **self.passiveConfig, anchor='w',
+                               font="Helvetica 2", justify='left')
+        new_button.grid(row=self.num_elements, column=0, sticky='we')
         self.num_elements += 1
 
     def post(self, padx, pady):
+        if len(self.command_list) * 20 < 200:
+            self.canvas.config(height=len(self.command_list) * 23)
+        else:
+            self.canvas.config(height=200)
         self.grid(row=1, column=0, sticky="nw", padx=padx, pady=pady)
-        self.yview("scroll", -120, "units")
+        self.canvas.xview_moveto(0)
+        self.canvas.yview_moveto(0)
         tk.Misc.lift(self, aboveThis=None)
         self.activeIndex = -1
 
@@ -92,32 +122,6 @@ class OptionMenu(tk.Canvas):
             self.activeIndex = (self.activeIndex + 1) % len(self.command_list)
             self.command_list[self.activeIndex].config(**self.activeConfig)
 
-    def mouse_wheel(self, event):
-        #if len(self.command_list) < 9:
-         #   return
-        if self.master.newActionFrame.optionMenuActive:
-            if event.keycode == 38:
-                self.change_index("up")
-                #if self.scrllbar.get()[0] <= 0:
-                #    delta = 0
-                #else:
-                delta = -2
-            elif event.keycode == 40:
-                self.change_index("down")
-                #if self.scrllbar.get()[1] >= 1:
-                   # delta = 0
-                #else:
-                delta = 2
-            else:
-                #if self.btnFrame.winfo_y() < ((8 - len(self.command_list)) * 21) and event.delta < 0:
-                    #return
-                delta = -1 * int(event.delta / 120)
-            self.yview("scroll", delta, "units")
-
-    def on_configure(self, event):
-        self.configure(scrollregion=self.bbox('all'))
-        #self.itemconfig(self.btnFrame, height=event.height, width=event.width)
-
     def add_options(self):
         for btn in self.command_list:
             btn.grid_remove()
@@ -146,7 +150,7 @@ class OptionMenu(tk.Canvas):
                       'Release Keyboard Key',
                       'Press Spacebar']
             for value in values:
-                self.add_command(value, command=None)
+                self.add_command(value)
         else:
             for value in self.master.newActionFrame.optionsChoiceMenuValues:
-                self.add_command(value, command=None)
+                self.add_command(value)

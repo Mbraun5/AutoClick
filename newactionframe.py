@@ -1,6 +1,6 @@
 import pyautogui as pag
 import tkinter as tk
-import optionmenuu as om
+import optionmenu as om
 import checkbox as cb
 import optionschoicemenu as ocm
 
@@ -196,7 +196,7 @@ class NewActionFrame(tk.Frame):
         if event.keycode == 18:
             self.optionMenu.unpost()
             self.optionMenuActive = False
-        self.optionMenu.mouse_wheel(event)
+        self.optionMenu.mouse_event(event)
 
     def option_menu_command(self, label):
         self.optionButton.config(text=label)
@@ -216,7 +216,7 @@ class NewActionFrame(tk.Frame):
     def create_choice_menu(self):
         x = self.master.winfo_x() + int(self.master.winfo_width() / 3)
         y = self.master.winfo_y() + int(self.master.winfo_height() / 3)
-        optionsChoiceMenu = ocm.OptionsChoiceMenu(self, x, y)
+        options_choice_menu = ocm.OptionsChoiceMenu(self, x, y)
 
     def reset(self):
         for entry in self.entries:
@@ -224,6 +224,12 @@ class NewActionFrame(tk.Frame):
         self.optionButton.config(text="           -- select an action --          " + u"\u2b9f")
         if self.checkBox.checked:
             self.checkBox.switch()
+
+    def reset_option_button(self):
+        self.optionButton.config(text="           -- select an action --          " + u"\u2b9f")
+
+    def set_option_button(self, label):
+        self.optionButton.config(text=label)
 
     def clear(self):
         self.commentEntry.delete(0, 'end')
