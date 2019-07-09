@@ -6,6 +6,7 @@ import shortcutframe as sf
 import footer as f
 import newactionframe as naf
 import keyboard
+import optionmenuu as om
 
 
 class Main(tk.Tk):
@@ -27,6 +28,18 @@ class Main(tk.Tk):
 
         self.footer = f.Footer(self)
         self.footer.grid(row=3, column=0, sticky='sew')
+
+        '''
+        self.om = om.OptionMenu(self, '#000F08', '#F4FFFD', '#092327', '#86E7B8')
+        self.om.grid(row=1, column=0, sticky="nw", padx=98, pady=74)
+        tk.Misc.lift(self.om, aboveThis=None)
+        
+        buttons = []
+        for i in range(24):
+            buttons.append(tk.Button(self.om.btnFrame, text='haha' + str(i)))
+            buttons[-1].pack(fill='x')
+            buttons[-1].bind('<MouseWheel>', self.om.mouse_event)
+        '''
 
         self.bind('<Alt_L>f', self.navbar.keyevent)
         self.bind('<Alt_L>e', self.navbar.keyevent)
