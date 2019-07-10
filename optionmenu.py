@@ -22,7 +22,7 @@ class OptionMenu(tk.Frame):
         self['highlightthickness'] = 1
 
         self.scrollbar = tk.Scrollbar(self, orient='vertical')
-        #self.scrollbar.pack(fill='y', side='right', expand='false')
+        # self.scrollbar.pack(fill='y', side='right', expand='false')
         self.canvas = tk.Canvas(self, bd=0, yscrollcommand=self.scrollbar.set, width=226, height=200,
                                 highlightthickness=0)
         self.canvas.pack(fill='both', side='left', expand=True)
@@ -79,7 +79,7 @@ class OptionMenu(tk.Frame):
             self.canvas.config(height=len(self.command_list) * 23)
         else:
             self.canvas.config(height=200)
-        self.grid(row=1, column=0, sticky="nw", padx=padx, pady=pady)
+        self.grid(row=1, column=0, sticky="nw", padx=padx, pady=pady, rowspan=2)
         self.canvas.xview_moveto(0)
         self.canvas.yview_moveto(0)
         tk.Misc.lift(self, aboveThis=None)

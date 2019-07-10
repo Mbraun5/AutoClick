@@ -9,7 +9,7 @@ class OptionsChoiceMenu(tk.Toplevel):
         tk.Toplevel.__init__(self)
         self.master = master
         self.wm_title("Options")
-        self.geometry('685x500+{}+{}'.format(x, y))
+        self.geometry('685x450+{}+{}'.format(x, y))
         self.resizable(False, False)
         self.overrideredirect(True)
         b = tk.Button(self, text="Ok", command=self.destroy)

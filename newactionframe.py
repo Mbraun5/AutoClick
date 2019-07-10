@@ -214,8 +214,8 @@ class NewActionFrame(tk.Frame):
             self.ignoreEvent = True
 
     def create_choice_menu(self):
-        x = self.master.winfo_x() + int(self.master.winfo_width() / 3)
-        y = self.master.winfo_y() + int(self.master.winfo_height() / 3)
+        x = self.master.winfo_x() + int(self.master.winfo_width() / 4)
+        y = self.master.winfo_y() + int(self.master.winfo_height() / 4)
         options_choice_menu = ocm.OptionsChoiceMenu(self, x, y)
 
     def reset(self):
