@@ -79,7 +79,7 @@ class OptionMenu(tk.Frame):
             self.canvas.config(height=len(self.command_list) * 23)
         else:
             self.canvas.config(height=200)
-        self.grid(row=1, column=0, sticky="nw", padx=padx, pady=pady, rowspan=2)
+        self.grid(row=1, column=0, sticky="nw", padx=padx, pady=pady, rowspan=4)
         self.canvas.xview_moveto(0)
         self.canvas.yview_moveto(0)
         tk.Misc.lift(self, aboveThis=None)

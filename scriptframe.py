@@ -11,9 +11,21 @@ class ScriptFrame(tk.Frame):
         self.titleFrame = tk.Frame(self, bg='#FFDDAA', height=20)
         self.titleFrame.pack(anchor='n', fill='x')
 
+        self.titles = ['#', 'Action', 'X-Coor', 'Y-Coor', 'Cursor Back?', 'Delay (ms)', 'Repeat', 'Comment']
+        self.labels = []
+        for title in self.titles:
+            new_label = tk.Label(self.titleFrame, text=title, width=10, font=('Helvetica', '9'))
+            new_label.pack(side='left')
+            self.labels.append(new_label)
+        self.labels[0].config(width=5)
+        self.labels[len(self.titles)-1].pack(side='left', fill='x', expand=True)
+
         self.textFrame = tk.Frame(self, bg='#abcabc', height=20)
         self.textFrame.pack(anchor='n', fill='x')
 
+        self.newbutton = tk.Button(self, text='HAHAsdfsdfsdfsdfsdf', anchor='w')
+        self.newbutton.config(width=5)
+        self.newbutton.pack(anchor='nw')
 
 
 ''' Double click handler

@@ -188,9 +188,13 @@ class NewActionFrame(tk.Frame):
             self.optionMenuActive = False
         elif self.optionMenuActive and widget != self.optionMenu:
             self.ignoreEvent = False
-        if widget.master == self.addFrame or widget.master == self.titleFrame:
-            if not isinstance(widget, tk.Entry):
-                self.master.focus_set()
+        try:
+            if widget.master == self.addFrame or widget.master == self.titleFrame:
+                if not isinstance(widget, tk.Entry):
+                    self.master.focus_set()
+        except AttributeError:
+            self.master.focus_set()
+            return
 
     def key_event(self, event):
         if event.keycode == 18:
