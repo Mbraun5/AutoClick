@@ -1,5 +1,6 @@
 import pyautogui as pag
 import tkinter as tk
+from tkinter import messagebox
 import optionmenu as om
 import checkbox as cb
 import optionschoicemenu as ocm
@@ -97,15 +98,15 @@ class NewActionFrame(tk.Frame):
         self.clearButton.grid(row=3, column=6, padx=5, pady=(0, 5), sticky='w')
 
         self.addButtonOne = tk.Button(self.addFrame, text='Add to top', image=self.pixel, compound='center',
-                                      font=('Helvetica', '9'), width=85)
+                                      font=('Helvetica', '9'), width=85, command=lambda: self.add_command('top'))
         self.addButtonOne.grid(row=0, column=7, padx=5, pady=(0, 5), sticky='e', columnspan=2)
 
         self.addButtonTwo = tk.Button(self.addFrame, text='Add to bottom', image=self.pixel, compound='center',
-                                      font=('Helvetica', '9'), width=85)
+                                      font=('Helvetica', '9'), width=85, command=lambda: self.add_command('bottom'))
         self.addButtonTwo.grid(row=1, column=7, padx=5, pady=(0, 5), sticky='e', columnspan=2)
 
         self.addButtonThree = tk.Button(self.addFrame, text='Add to location', image=self.pixel, compound='center',
-                                        font=('Helvetica', '9'), width=85)
+                                        font=('Helvetica', '9'), width=85, command=lambda: self.add_command('location'))
         self.addButtonThree.grid(row=2, column=7, padx=5, pady=(0, 5), sticky='e', columnspan=2)
 
         self.repeatLabel = tk.Label(self.addFrame, text="Repeat count:")
@@ -138,6 +139,23 @@ class NewActionFrame(tk.Frame):
                         self.repeatEntry]
 
         self.config()
+
+    def add_command(self, location, execute=False):
+        if not execute:         # Allows for entries to be checked prior to command being added.
+            self.after(75, lambda: self.add_command(location, True))
+            return
+        text = self.optionButton['text'] if self.optionButton['text'] != "           -- select an action --          " \
+                                            + u"\u2b9f" else None
+        args = [text, self.xEntry.get(), self.yEntry.get(), self.checkBox.checked,
+                self.delayEntry.get(), self.repeatEntry.get(), self.commentEntry.get()]
+        for i in range(len(args)-1):
+            if args[i] is None or args[i] == '':
+                messagebox.showinfo("Error!", "Fill out all entry fields and select an action.\nThe comment entry and "
+                                    + "cursor back checkbox are optional.\n\nIf you would like to have the action "
+                                    + "performed once, set the repeat count entry to 1.")
+                return
+
+        self.master.script_frame.add_script(location, *args)
 
     @staticmethod
     def callback(p):
