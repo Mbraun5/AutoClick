@@ -103,9 +103,13 @@ class NavBar(tk.Frame):
             self.buttonIndex = 2
         self.ignoreAltEvent = True
 
-    def button_event(self):
+    def button_event(self, event):
         x, y = pag.position()
         widget = self.winfo_containing(x, y)
+
+        # print(widget)
+        # print(event.widget) CHANGE ALL THESE TO USE event.widget INSTEAD OF PAG.POSITION
+
         if isinstance(widget, tk.Button) and self.activeButton is None and isinstance(widget.master, NavBar):
             widget.configure(**self.activeConfig)
             self.activeButton = widget

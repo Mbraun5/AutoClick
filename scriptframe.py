@@ -35,27 +35,21 @@ class ScriptFrame(tk.Frame):
         self.commandsFrameWindow = self.canvas.create_window(0, 0, window=self.commandsFrame, anchor='nw')
 
         self.indexFrame = tk.Frame(self.commandsFrame)
-        self.indexFrame.pack(side='left', anchor='w', fill='y', expand=False)
+        # self.indexFrame.pack(side='left', anchor='w', fill='y', expand=False)
+
+        self.commandsFrame.rowconfigure(0, weight=1)
+        self.commandsFrame.columnconfigure(1, weight=1)
+        self.indexFrame.grid(row=0, column=0, sticky='ns')
+
         self.valueFrame = tk.Frame(self.commandsFrame)
-        self.valueFrame.pack(side='right', anchor='w', fill='both', expand=True)
+        self.valueFrame.columnconfigure(0, weight=1)
+        # self.valueFrame.pack(side='right', anchor='w', fill='both', expand=True)
+
+        self.valueFrame.grid(row=0, column=1, sticky='nsew')
 
         self.commandsFrame.bind('<Configure>', self.configure_interior_window)
         self.canvas.bind('<Configure>', self.configure_canvas)
         self.bind('<MouseWheel>', self.mouse_event)
-
-        '''
-        
-        for i in range(10):
-            label = tk.Label(self.commandsFrame, text='label {}'.format(i))
-            label.pack(fill='both', expand=True)
-            label.bind("<MouseWheel>", self.mouse_event)
-        self.textFrame = tk.Frame(self.canvas, bg='#abcabc', height=20)
-        self.textFrame.pack(anchor='n', fill='x')
-
-        self.newbutton = tk.Button(self.canvas, text='HAHAsdfsdfsdfsdfsdf', anchor='w')
-        self.newbutton.config(width=5)
-        self.newbutton.pack(anchor='nw')
-        '''
 
         self.cvrFrame = tk.Frame(self.master, width=103, bg='#465362')
         self.cvrFrame.grid(row=2, column=0, sticky='nse')
@@ -77,11 +71,25 @@ class ScriptFrame(tk.Frame):
         self.deleteAllButton = tk.Button(self.btnFrame, text='Delete All', font=('Helvetica', '9'))
         self.deleteAllButton.pack(anchor='center', expand=True, fill='x', pady=self.btnPaddingy, padx=self.btnPaddingx)
 
-        # self.test = sbf.ScriptButtonFrame(self.commandsFrame, self.dimensions, bg='#fdda33')
-        # self.test.pack(fill='x', expand=True)
-
         self.config()
         self.actions = []
+        self.indexes = []
+
+        self.active_rows = []
+
+        self.active_config = {'bg': '#000F08',
+                              'fg': '#F4FFFD',
+                              'borderwidth': 0,
+                              'activebackground': '#000F08',
+                              'activeforeground': '#F4FFFD'
+                              }
+        self.passive_config = {'bg': '#F4FFFD',
+                               'fg': '#000F08',
+                               'borderwidth': 0,
+                               'activebackground': '#F4FFFD',
+                               'activeforeground': '#000F08'
+                               }
+        self.shiftFlag = False
 
     def config(self):
         config = {'bg': '#000F08',
@@ -108,6 +116,67 @@ class ScriptFrame(tk.Frame):
         self.canvas.yview("scroll", delta, "units")
 
     def add_script(self, location, *args):
+        num_btn = tk.Button(self.indexFrame, width=self.dimensions[0], text=len(self.actions) + 1, anchor='w', padx=6,
+                            bg='#ffffff', borderwidth=0, relief='flat')
+        num_btn.pack()
+        self.indexes.append(num_btn)
+
+        new_script = sbf.ScriptButtonFrame(self.valueFrame, self.dimensions, args)
+        if location == 'bottom':
+            new_script.grid(row=len(self.actions), sticky='nsew')
+            self.actions.append(new_script)
+        elif location == 'top':
+            for elem in self.actions:
+                elem.grid_remove()
+                elem.grid_forget()
+            self.actions.insert(0, new_script)
+            for index, elem in enumerate(self.actions):
+                elem.grid(row=index, sticky='nsew')
+        else:
+            loc = int(location) - 1
+            for i in range(loc, len(self.actions)):
+                self.actions[i].grid_remove()
+                self.actions[i].grid_forget()
+            self.actions.insert(loc, new_script)
+            for i in range(loc, len(self.actions)):
+                self.actions[i].grid(row=i, sticky='nsew')
+
+    def button_event(self, event):
+        if not self.shiftFlag:
+            # print("button press event")
+            # print(event.widget)
+            for index in self.active_rows:
+                self.indexes[index].config(self.passive_config)
+                self.actions[index].set_passive()
+            self.active_rows = []
+            try:
+                if isinstance(event.widget.master.master.master.master.master, ScriptFrame):
+                    event.widget.master.set_active()
+                    index = self.actions.index(event.widget.master)
+                    self.indexes[index].config(self.active_config)
+                    self.active_rows.append(index)
+            except AttributeError:
+                pass
+            try:
+                if isinstance(event.widget.master.master.master.master, ScriptFrame):
+                    event.widget.config(self.active_config)
+                    index = self.indexes.index(event.widget)
+                    self.actions[index].set_active()
+                    self.active_rows.append(index)
+            except AttributeError:
+                pass
+
+    def shift_click_event(self, event):
+        self.shiftFlag = True
+        print("shift click event")
+        print(event.widget)
+        self.after(40, self.remove_flag)
+
+    def remove_flag(self):
+        self.shiftFlag = False
+
+    '''
+    def add_script(self, location, *args):
         # new_script = sbf.ScriptButtonFrame(self.commandsFrame, self.dimensions, len(self.actions) + 1, args)
         # new_script.pack(anchor='w')
         num_btn = tk.Button(self.indexFrame, width=self.dimensions[0], text=len(self.actions) + 1, anchor='w', padx=6,
@@ -130,6 +199,7 @@ class ScriptFrame(tk.Frame):
             self.actions.insert(int(location)-1, new_script)
             for elem in self.actions:
                 elem.pack(anchor='w')
+    '''
 
 
 ''' Double click handler

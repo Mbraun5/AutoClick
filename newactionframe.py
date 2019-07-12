@@ -14,7 +14,7 @@ class NewActionFrame(tk.Frame):
         self.titleFrame.pack(side='top')
         self.addFrame = tk.Frame(self)
         self.addFrame.pack(side='left', fill='both', expand=True)
-        self.addFrame.columnconfigure(4, weight=1)
+        self.addFrame.columnconfigure(5, weight=1)
 
         self.pixel = tk.PhotoImage(width=1, height=1)
 
@@ -109,6 +109,13 @@ class NewActionFrame(tk.Frame):
                                         command=lambda: self.add_command(self.locationEntry.get()))
         self.addButtonThree.grid(row=2, column=7, padx=5, pady=(0, 5), sticky='e', columnspan=2)
 
+        self.randomEntry = tk.Entry(self.addFrame, width=5, font=('Helvetica', '9', 'bold'), validate='all',
+                                    justify='center', validatecommand=(vcmd, '%P'))
+        self.randomEntry.grid(row=2, column=5, padx="0 20", sticky='w')
+        self.randomEntry.bind("<FocusOut>", lambda _: self.check_entry(self.randomEntry, 99999))
+        self.randomLabel = tk.Label(self.addFrame, text="+ Random")
+        self.randomLabel.grid(row=2, column=5, padx="40 5", sticky='w')
+
         self.locationEntry = tk.Entry(self.addFrame, width=5, font=('Helvetica', '9', 'bold'), validate='all',
                                       justify='center', validatecommand=(vcmd, '%P'))
         self.locationEntry.grid(row=2, column=6, padx="0 20", pady="0 3", columnspan=2)
@@ -130,7 +137,8 @@ class NewActionFrame(tk.Frame):
                        self.delayLabel,
                        self.checkLabel,
                        self.msLabel,
-                       self.repeatLabel]
+                       self.repeatLabel,
+                       self.randomLabel]
         self.buttons = [self.addButtonOne,
                         self.addButtonTwo,
                         self.addButtonThree,
@@ -142,7 +150,9 @@ class NewActionFrame(tk.Frame):
                         self.yEntry,
                         self.delayEntry,
                         self.commentEntry,
-                        self.repeatEntry]
+                        self.repeatEntry,
+                        self.locationEntry,
+                        self.randomEntry]
 
         self.config()
 
@@ -156,18 +166,28 @@ class NewActionFrame(tk.Frame):
         text = self.optionButton['text'] if self.optionButton['text'] != "           -- select an action --          "\
                                                                          + u"\u2b9f" else None
         args = [text, self.xEntry.get(), self.yEntry.get(), self.checkBox.checked,
-                self.delayEntry.get(), self.repeatEntry.get(), self.commentEntry.get()]
+                "{}+{}".format(self.delayEntry.get(), self.randomEntry.get()), self.repeatEntry.get(),
+                self.commentEntry.get()]
         for i in range(len(args)-1):
             if args[i] is None or args[i] == '':
-                messagebox.showinfo("Error!", "Fill out all entry fields and select an action.\nThe comment entry and "
+                messagebox.showinfo("Entry Error!",
+                                    "Fill out all entry fields and select an action.\nThe comment entry and "
                                     + "cursor back checkbox are optional.\n\nIf you would like to have the action "
                                     + "performed once, set the repeat count entry to 1.")
                 return
+        if self.delayEntry.get() == '' or self.randomEntry.get() == '':
+            messagebox.showinfo("Delay Error!",
+                                "Please enter the delay amount you would like before the action is performed."
+                                + "\n\nTo prevent detection by anticheat algorithms, add a value to the "
+                                + "random field and a random delay value between 1 and that number will be "
+                                + "chosen to add to the delay before it is performed.")
+            return
         if location == '':
-            messagebox.showinfo("Error!", "To use the add to location, input in the entry box to the left of the add "
-                                          + "to location button the location that you would like the action to be "
-                                          + "placed.\n\nThe action currently at that spot will be pushed back one "
-                                          + "place, as will the rest of the proceeding actions.")
+            messagebox.showinfo("Location Error!",
+                                "To use the add to location, input in the entry box to the left of the add "
+                                + "to location button the location that you would like the action to be "
+                                + "placed.\n\nThe action currently at that spot will be pushed back one "
+                                + "place, as will the rest of the proceeding actions.")
             return
         self.master.script_frame.add_script(location, *args)
 

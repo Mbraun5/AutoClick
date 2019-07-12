@@ -51,10 +51,12 @@ class Main(tk.Tk):
         self.bind('<Alt_R>e', self.navbar.keyevent)
         self.bind('<Alt_R>v', self.navbar.keyevent)
         self.bind('<KeyRelease>', self.key_release_event)
-        self.bind('<ButtonRelease-1>', self.button_event)
+        self.bind('<ButtonRelease-1>', self.button_release_event)
+        self.bind('<Button-1>', self.button_click_event)
+        self.bind('<Shift-Button-1>', self.shift_event)
 
-    def button_event(self, event):
-        self.navbar.button_event()
+    def button_release_event(self, event):
+        self.navbar.button_event(event)
         self.shortcut_frame.button_event()
         self.newActionFrame.button_event()
         del event
@@ -62,6 +64,12 @@ class Main(tk.Tk):
     def key_release_event(self, event):
         self.navbar.altevent(event)
         self.newActionFrame.key_event(event)
+
+    def button_click_event(self, event):
+        self.script_frame.button_event(event)
+
+    def shift_event(self, event):
+        self.script_frame.shift_click_event(event)
 
     def get_protected(self):
         return self._w
@@ -71,7 +79,7 @@ if __name__ == "__main__":
     root = Main()
     img = ImageTk.PhotoImage(Image.open('sprites/icon.png'))
     root.tk.call('wm', 'iconphoto', root.get_protected(), img)
-    root.geometry('600x400+{}+{}'.format(int(pag.size()[0] / 2 - 500/2), int(pag.size()[1] / 2 - 350/2)))
+    root.geometry('830x600+{}+{}'.format(int(pag.size()[0] / 2 - 500/2), int(pag.size()[1] / 2 - 350/2)))
     root.minsize(250, 0)
     root.title('Automation')
     root.mainloop()
