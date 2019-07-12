@@ -125,7 +125,11 @@ class ScriptFrame(tk.Frame):
                 elem.pack(anchor='w')
             self.actions.insert(0, new_script)
         else:
-            pass
+            for elem in self.actions:
+                elem.pack_forget()
+            self.actions.insert(int(location)-1, new_script)
+            for elem in self.actions:
+                elem.pack(anchor='w')
 
 
 ''' Double click handler

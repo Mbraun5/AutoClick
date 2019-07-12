@@ -8,8 +8,7 @@ import optionschoicemenu as ocm
 
 class NewActionFrame(tk.Frame):
     def __init__(self, master, *args, **kwargs):
-        tk.Frame.__init__(self)
-        self.master = master
+        tk.Frame.__init__(self, master, kwargs)
 
         self.titleFrame = tk.Frame(self)
         self.titleFrame.pack(side='top')
@@ -106,8 +105,15 @@ class NewActionFrame(tk.Frame):
         self.addButtonTwo.grid(row=1, column=7, padx=5, pady=(0, 5), sticky='e', columnspan=2)
 
         self.addButtonThree = tk.Button(self.addFrame, text='Add to location', image=self.pixel, compound='center',
-                                        font=('Helvetica', '9'), width=85, command=lambda: self.add_command('location'))
+                                        font=('Helvetica', '9'), width=85,
+                                        command=lambda: self.add_command(self.locationEntry.get()))
         self.addButtonThree.grid(row=2, column=7, padx=5, pady=(0, 5), sticky='e', columnspan=2)
+
+        self.locationEntry = tk.Entry(self.addFrame, width=5, font=('Helvetica', '9', 'bold'), validate='all',
+                                      justify='center', validatecommand=(vcmd, '%P'))
+        self.locationEntry.grid(row=2, column=6, padx="0 20", pady="0 3", columnspan=2)
+        self.locationEntry.bind("<FocusOut>", lambda _: self.check_entry(self.locationEntry,
+                                                                         len(self.master.script_frame.actions)+1))
 
         self.repeatLabel = tk.Label(self.addFrame, text="Repeat count:")
         self.repeatLabel.grid(row=3, column=7, padx=5, sticky='e')
@@ -142,10 +148,13 @@ class NewActionFrame(tk.Frame):
 
     def add_command(self, location, execute=False):
         if not execute:         # Allows for entries to be checked prior to command being added.
-            self.after(75, lambda: self.add_command(location, True))
+            if location != 'top' and location != 'bottom':
+                self.after(75, lambda: self.add_command(self.locationEntry.get(), True))
+            else:
+                self.after(75, lambda: self.add_command(location, True))
             return
-        text = self.optionButton['text'] if self.optionButton['text'] != "           -- select an action --          " \
-                                            + u"\u2b9f" else None
+        text = self.optionButton['text'] if self.optionButton['text'] != "           -- select an action --          "\
+                                                                         + u"\u2b9f" else None
         args = [text, self.xEntry.get(), self.yEntry.get(), self.checkBox.checked,
                 self.delayEntry.get(), self.repeatEntry.get(), self.commentEntry.get()]
         for i in range(len(args)-1):
@@ -154,7 +163,12 @@ class NewActionFrame(tk.Frame):
                                     + "cursor back checkbox are optional.\n\nIf you would like to have the action "
                                     + "performed once, set the repeat count entry to 1.")
                 return
-
+        if location == '':
+            messagebox.showinfo("Error!", "To use the add to location, input in the entry box to the left of the add "
+                                          + "to location button the location that you would like the action to be "
+                                          + "placed.\n\nThe action currently at that spot will be pushed back one "
+                                          + "place, as will the rest of the proceeding actions.")
+            return
         self.master.script_frame.add_script(location, *args)
 
     @staticmethod
@@ -167,7 +181,10 @@ class NewActionFrame(tk.Frame):
     def check_entry(entry, value):
         if entry.get() == '':
             return
-        if int(entry.get()) > value:
+        if int(entry.get()) <= 0:
+            entry.delete(0, 'end')
+            entry.insert(0, '1')
+        elif int(entry.get()) > value:
             entry.delete(0, 'end')
             entry.insert(0, str(value))
 
