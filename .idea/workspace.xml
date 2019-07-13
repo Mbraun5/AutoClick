@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d9318c1a-3f8d-44e8-a729-24f14c61230d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scriptButtonFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/scriptButtonFrame.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scriptframe.py" beforeDir="false" afterPath="$PROJECT_DIR$/scriptframe.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="49" column="27" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
+            <state relative-caret-position="646">
+              <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -29,8 +28,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scriptframe.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="582">
-              <caret line="310" lean-forward="true" selection-start-line="310" selection-end-line="310" />
+            <state relative-caret-position="310">
+              <caret line="294" column="85" selection-start-line="294" selection-start-column="85" selection-end-line="294" selection-end-column="85" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -496,8 +495,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="49" column="27" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
+        <state relative-caret-position="646">
+          <caret line="50" column="54" selection-start-line="50" selection-start-column="54" selection-end-line="50" selection-end-column="54" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -506,8 +505,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scriptframe.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="310" lean-forward="true" selection-start-line="310" selection-end-line="310" />
+        <state relative-caret-position="310">
+          <caret line="294" column="85" selection-start-line="294" selection-start-column="85" selection-end-line="294" selection-end-column="85" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

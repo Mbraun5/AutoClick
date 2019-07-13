@@ -48,6 +48,7 @@ class Main(tk.Tk):
         self.bind('<Control_R>v', self.script_frame.paste_event)
         self.bind('<Control_L>a', self.script_frame.select_all_event)
         self.bind('<Control_R>a', self.script_frame.select_all_event)
+        self.bind('<Delete>', self.script_frame.delete)
 
     def button_release_event(self, event):
         self.navbar.button_event(event)

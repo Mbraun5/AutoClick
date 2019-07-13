@@ -173,7 +173,7 @@ class ScriptFrame(tk.Frame):
             elif event.widget == self.downButton:
                 self.move_down(prev_rows)
             elif event.widget == self.deleteButton:
-                self.delete(prev_rows)
+                self.delete(rows=prev_rows)
 
     def shift_click_event(self, event):
         self.shiftFlag = True
@@ -288,19 +288,21 @@ class ScriptFrame(tk.Frame):
         self.actions.insert(rows[0], self.actions[rows[1]+1])
         del self.actions[rows[1]+2]
 
-    def delete(self, rows):
+    def delete(self, event=None, rows=None):
+        if rows is None:
+            rows = self.active_rows
+            self.active_rows = []
+            # add reset function to set all scripts in scriptframe to passive config.
         if len(rows) <= 0:
             messagebox.showinfo('Error!',
                                 'Select an action or group of actions and select the delete button to delete the entire'
                                 + ' group.')
             return
-
         for i in range(rows[0], rows[1] + 1):
             self.actions[rows[0]].grid_remove()
             self.actions[rows[0]].grid_forget()
             del self.actions[rows[0]]
-            self.indexes[-1].grid_remove()
-            self.indexes[-1].grid_forget()
+            self.indexes[-1].pack_forget()
             del self.indexes[-1]
         for i in range(rows[0], len(self.actions)):
             self.actions[i].grid(row=i, sticky='news')
