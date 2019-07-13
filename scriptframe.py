@@ -1,6 +1,8 @@
 import tkinter as tk
 import scriptButtonFrame as sbf
 from tkinter import messagebox
+import threading as t
+import actions as a
 
 
 class ScriptFrame(tk.Frame):
@@ -61,15 +63,16 @@ class ScriptFrame(tk.Frame):
         self.btnPaddingy = "0 10"
         self.btnPaddingx = "5 5"
         self.startButton = tk.Button(self.btnFrame, text='Start', font=('Helvetica', '9'), image=self.pixel, width=85,
-                                     compound='center')
-        self.startButton.pack(anchor='center', expand=True, fill='x', pady="10 10", padx=self.btnPaddingx,)
+                                     compound='center', command=self.start_script)
+        self.startButton.pack(anchor='center', expand=True, fill='x', pady="10 10", padx=self.btnPaddingx)
         self.upButton = tk.Button(self.btnFrame, text='Move Up', font=('Helvetica', '9'))
         self.upButton.pack(anchor='center', expand=True, fill='x', pady=self.btnPaddingy, padx=self.btnPaddingx)
         self.downButton = tk.Button(self.btnFrame, text='Move Down', font=('Helvetica', '9'))
         self.downButton.pack(anchor='center', expand=True, fill='x', pady=self.btnPaddingy, padx=self.btnPaddingx)
         self.deleteButton = tk.Button(self.btnFrame, text='Delete', font=('Helvetica', '9'))
         self.deleteButton.pack(anchor='center', expand=True, fill='x', pady=self.btnPaddingy, padx=self.btnPaddingx)
-        self.deleteAllButton = tk.Button(self.btnFrame, text='Delete All', font=('Helvetica', '9'))
+        self.deleteAllButton = tk.Button(self.btnFrame, text='Delete All', font=('Helvetica', '9'),
+                                         command=self.delete_all)
         self.deleteAllButton.pack(anchor='center', expand=True, fill='x', pady=self.btnPaddingy, padx=self.btnPaddingx)
 
         self.config()
@@ -92,6 +95,7 @@ class ScriptFrame(tk.Frame):
                                }
         self.shiftFlag = False
         self.row_copy = None
+        self.script_thread = None
 
     def config(self):
         config = {'bg': '#000F08',
@@ -142,16 +146,20 @@ class ScriptFrame(tk.Frame):
             for i in range(loc, len(self.actions)):
                 self.actions[i].grid(row=i, sticky='nsew')
 
+    def deselect_all(self):
+        if len(self.active_rows) > 0:
+            for i in range(self.active_rows[0], self.active_rows[1] + 1):
+                self.indexes[i].config(self.passive_config)
+                self.actions[i].set_passive()
+                self.active_rows = []
+
     def button_event(self, event):
         if not self.shiftFlag:
             if isinstance(event.widget, tk.Scrollbar):
                 return
             prev_rows = self.active_rows
-            if len(self.active_rows) > 0:
-                for i in range(self.active_rows[0], self.active_rows[1] + 1):
-                    self.indexes[i].config(self.passive_config)
-                    self.actions[i].set_passive()
-                    self.active_rows = []
+            self.deselect_all()
+
             try:
                 if isinstance(event.widget.master.master.master.master.master, ScriptFrame):
                     event.widget.master.set_active()
@@ -222,8 +230,16 @@ class ScriptFrame(tk.Frame):
     def remove_flag(self):
         self.shiftFlag = False
 
-    def copy_event(self, event):
-        self.row_copy = self.active_rows
+    def copy_event(self, event=None, recopy=False):
+        if not recopy:
+            self.row_copy = []
+            for i in range(self.active_rows[0], self.active_rows[1] + 1):
+                self.row_copy.append(self.actions[i].copy())
+        else:
+            copy = []
+            for elem in self.row_copy:
+                copy.append(elem.copy())
+            self.row_copy = copy
 
     def paste_event(self, event):
         if self.row_copy is None:
@@ -237,9 +253,7 @@ class ScriptFrame(tk.Frame):
                                 + 'will be appended after the last action or selected actions if more than one is'
                                 + 'selected.')
             return
-        add_list = []
-        for i in range(self.row_copy[0], self.row_copy[1] + 1):
-            add_list.append(self.actions[i].copy())
+        for i in range(len(self.row_copy)):
             num_btn = tk.Button(self.indexFrame, width=self.dimensions[0], text=len(self.indexes) + 1, anchor='w',
                                 padx=6,
                                 bg='#ffffff', borderwidth=0, relief='flat')
@@ -249,9 +263,10 @@ class ScriptFrame(tk.Frame):
         for i in range(self.active_rows[1], len(self.actions)):
             self.actions[i].grid_remove()
             self.actions[i].grid_forget()
-        self.actions = self.actions[:self.active_rows[1]+1] + add_list + self.actions[self.active_rows[1]+1:]
+        self.actions = self.actions[:self.active_rows[1]+1] + self.row_copy + self.actions[self.active_rows[1]+1:]
         for i in range(self.active_rows[1], len(self.actions)):
             self.actions[i].grid(row=i, sticky='nsew')
+        self.copy_event(recopy=True)
 
     def select_all_event(self, event):
         if len(self.actions) <= 0:
@@ -291,8 +306,7 @@ class ScriptFrame(tk.Frame):
     def delete(self, event=None, rows=None):
         if rows is None:
             rows = self.active_rows
-            self.active_rows = []
-            # add reset function to set all scripts in scriptframe to passive config.
+            self.deselect_all()
         if len(rows) <= 0:
             messagebox.showinfo('Error!',
                                 'Select an action or group of actions and select the delete button to delete the entire'
@@ -308,7 +322,19 @@ class ScriptFrame(tk.Frame):
             self.actions[i].grid(row=i, sticky='news')
 
     def delete_all(self):
-        pass
+        for index, elem in enumerate(self.actions):
+            elem.grid_remove()
+            elem.grid_forget()
+            self.indexes[index].pack_forget()
+        self.indexes = []
+        self.actions = []
+
+    def start_script(self):
+        self.script_thread = t.Thread(target=self.start_script_t)
+        self.script_thread.start()
+
+    def start_script_t(self):
+        events = a.Actions(self.actions)
 
 
 ''' Double click handler

@@ -5,17 +5,26 @@ class ScriptButtonFrame(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         tk.Frame.__init__(self, master, **kwargs)
 
+        # for copying purposes
         self.args = args
         self.kwargs = kwargs
 
         dimensions = args[0]
-        values = args[1]
+        self.values = args[1]
+
+        self.name = args[1][0]
+        self.x = int(args[1][1])
+        self.y = int(args[1][2])
+        self.curs_back = args[1][3]
+        self.delay = args[1][4]
+        self.repeat = int(args[1][5])
+        self.comment = args[1][6]
 
         for i in range(1, 8):
             if i == 4:
-                value = 'No' if values[i-1] is False else 'Yes'
+                value = 'No' if self.values[i-1] is False else 'Yes'
             else:
-                value = values[i-1]
+                value = self.values[i-1]
             new_btn = tk.Button(self, text=value, anchor='w', padx=6, bg='#ffffff', borderwidth=0, relief='flat',
                                 font=('Helvetica', '9'))
             if i == 7:
