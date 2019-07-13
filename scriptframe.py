@@ -96,6 +96,8 @@ class ScriptFrame(tk.Frame):
         self.shiftFlag = False
         self.row_copy = None
         self.script_thread = None
+        self.events = None
+        self.active = False
 
     def config(self):
         config = {'bg': '#000F08',
@@ -334,7 +336,14 @@ class ScriptFrame(tk.Frame):
         self.script_thread.start()
 
     def start_script_t(self):
-        events = a.Actions(self.actions)
+        self.active = True
+        self.events = a.Actions(self.actions)
+        self.events.start()
+        self.active = False
+
+    def stop_script(self):
+        self.events.set_exit_flag()
+        self.active = False
 
 
 ''' Double click handler

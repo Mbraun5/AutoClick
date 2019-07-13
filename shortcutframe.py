@@ -78,6 +78,11 @@ class ShortcutFrame(tk.Frame):
     def handle_press(self, key):
         if key.name == self.assignMap[self.getPositionText]:
             self.master.newActionFrame.set_current_xy()
+        elif key.name == self.assignMap[self.startStopText]:
+            if self.master.script_frame.active:
+                self.master.script_frame.stop_script()
+            else:
+                self.master.script_frame.start_script()
         widget = self.master.focus_displayof()
         if widget == self.getPositionText or widget == self.getPositionTextTwo:
             if self.textDict[self.startStopText] == key.name:

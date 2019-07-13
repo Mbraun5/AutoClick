@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d9318c1a-3f8d-44e8-a729-24f14c61230d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/scriptButtonFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/scriptButtonFrame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions.py" beforeDir="false" afterPath="$PROJECT_DIR$/actions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scriptframe.py" beforeDir="false" afterPath="$PROJECT_DIR$/scriptframe.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shortcutframe.py" beforeDir="false" afterPath="$PROJECT_DIR$/shortcutframe.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +17,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="758">
+            <state relative-caret-position="735">
               <caret line="74" column="45" selection-start-line="74" selection-start-column="45" selection-end-line="74" selection-end-column="45" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -28,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/actions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1496">
-              <caret line="145" column="29" selection-start-line="145" selection-start-column="29" selection-end-line="145" selection-end-column="29" />
+            <state relative-caret-position="3145">
+              <caret line="185" column="62" lean-forward="true" selection-start-line="185" selection-start-column="62" selection-end-line="185" selection-end-column="62" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -38,10 +39,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optionschoicemenu.py">
+        <entry file="file://$PROJECT_DIR$/scriptframe.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="82" column="25" selection-start-line="82" selection-start-column="25" selection-end-line="82" selection-end-column="48" />
+            <state relative-caret-position="460">
+              <caret line="340" column="27" selection-start-line="340" selection-start-column="27" selection-end-line="340" selection-end-column="27" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -50,10 +51,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scriptframe.py">
+        <entry file="file://$PROJECT_DIR$/optionschoicemenu.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="888">
-              <caret line="338" selection-start-line="338" selection-end-line="338" />
+            <state>
+              <caret line="66" column="8" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="8" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -64,8 +65,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shortcutframe.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="986">
-              <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
+            <state relative-caret-position="297">
+              <caret line="83" column="17" lean-forward="true" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -123,8 +124,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>switch</find>
-      <find>check_event</find>
       <find>sitch</find>
       <find>optionMenu</find>
       <find>reset</find>
@@ -153,6 +152,8 @@
       <find>after</find>
       <find>milliseconds</find>
       <find>moveTo</find>
+      <find>def assign</find>
+      <find>bind</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -171,7 +172,6 @@
         <option value="$PROJECT_DIR$/configuration.py" />
         <option value="$PROJECT_DIR$/menu.py" />
         <option value="$PROJECT_DIR$/checkbox.py" />
-        <option value="$PROJECT_DIR$/shortcutframe.py" />
         <option value="$PROJECT_DIR$/optionmenuu.py" />
         <option value="$PROJECT_DIR$/optionschoicemenu.py" />
         <option value="$PROJECT_DIR$/optionmenu.py" />
@@ -181,6 +181,7 @@
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/scriptButtonFrame.py" />
+        <option value="$PROJECT_DIR$/shortcutframe.py" />
         <option value="$PROJECT_DIR$/scriptframe.py" />
         <option value="$PROJECT_DIR$/actions.py" />
       </list>
@@ -189,7 +190,7 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="512" />
     <option name="y" value="227" />
-    <option name="width" value="1400" />
+    <option name="width" value="1690" />
     <option name="height" value="1000" />
   </component>
   <component name="ProjectView">
@@ -468,26 +469,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="758">
-          <caret line="74" column="45" selection-start-line="74" selection-start-column="45" selection-end-line="74" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shortcutframe.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="76" lean-forward="true" selection-start-line="76" selection-end-line="76" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/optionmenu.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -495,20 +476,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scriptframe.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="888">
-          <caret line="338" selection-start-line="338" selection-end-line="338" />
+        <state relative-caret-position="735">
+          <caret line="74" column="45" selection-start-line="74" selection-start-column="45" selection-end-line="74" selection-end-column="45" />
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/optionschoicemenu.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="82" column="25" selection-start-line="82" selection-start-column="25" selection-end-line="82" selection-end-column="48" />
+        <state>
+          <caret line="66" column="8" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shortcutframe.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="83" column="17" lean-forward="true" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scriptframe.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="340" column="27" selection-start-line="340" selection-start-column="27" selection-end-line="340" selection-end-column="27" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
@@ -517,8 +518,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/actions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1496">
-          <caret line="145" column="29" selection-start-line="145" selection-start-column="29" selection-end-line="145" selection-end-column="29" />
+        <state relative-caret-position="3145">
+          <caret line="185" column="62" lean-forward="true" selection-start-line="185" selection-start-column="62" selection-end-line="185" selection-end-column="62" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
