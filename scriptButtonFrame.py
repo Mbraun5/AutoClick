@@ -4,7 +4,9 @@ import tkinter as tk
 class ScriptButtonFrame(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         tk.Frame.__init__(self, master, **kwargs)
-        print(self.master)
+
+        self.args = args
+        self.kwargs = kwargs
 
         dimensions = args[0]
         values = args[1]
@@ -33,6 +35,9 @@ class ScriptButtonFrame(tk.Frame):
     def set_passive(self):
         for btn in self.winfo_children():
             btn.config(self.master.master.master.master.passive_config)
+
+    def copy(self):
+        return ScriptButtonFrame(self.master, self.args[0], self.args[1])
 
 
 

@@ -1,5 +1,6 @@
 import tkinter as tk
 import scriptButtonFrame as sbf
+from tkinter import messagebox
 
 
 class ScriptFrame(tk.Frame):
@@ -90,6 +91,7 @@ class ScriptFrame(tk.Frame):
                                'activeforeground': '#000F08'
                                }
         self.shiftFlag = False
+        self.row_copy = None
 
     def config(self):
         config = {'bg': '#000F08',
@@ -120,7 +122,6 @@ class ScriptFrame(tk.Frame):
                             bg='#ffffff', borderwidth=0, relief='flat')
         num_btn.pack()
         self.indexes.append(num_btn)
-
         new_script = sbf.ScriptButtonFrame(self.valueFrame, self.dimensions, args)
         if location == 'bottom':
             new_script.grid(row=len(self.actions), sticky='nsew')
@@ -143,18 +144,20 @@ class ScriptFrame(tk.Frame):
 
     def button_event(self, event):
         if not self.shiftFlag:
-            # print("button press event")
-            # print(event.widget)
-            for index in self.active_rows:
-                self.indexes[index].config(self.passive_config)
-                self.actions[index].set_passive()
-            self.active_rows = []
+            if isinstance(event.widget, tk.Scrollbar):
+                return
+            prev_rows = self.active_rows
+            if len(self.active_rows) > 0:
+                for i in range(self.active_rows[0], self.active_rows[1] + 1):
+                    self.indexes[i].config(self.passive_config)
+                    self.actions[i].set_passive()
+                    self.active_rows = []
             try:
                 if isinstance(event.widget.master.master.master.master.master, ScriptFrame):
                     event.widget.master.set_active()
                     index = self.actions.index(event.widget.master)
                     self.indexes[index].config(self.active_config)
-                    self.active_rows.append(index)
+                    self.active_rows = [index, index]
             except AttributeError:
                 pass
             try:
@@ -162,44 +165,148 @@ class ScriptFrame(tk.Frame):
                     event.widget.config(self.active_config)
                     index = self.indexes.index(event.widget)
                     self.actions[index].set_active()
-                    self.active_rows.append(index)
+                    self.active_rows = [index, index]
             except AttributeError:
                 pass
+            if event.widget == self.upButton:
+                self.move_up(prev_rows)
+            elif event.widget == self.downButton:
+                self.move_down(prev_rows)
+            elif event.widget == self.deleteButton:
+                self.delete(prev_rows)
 
     def shift_click_event(self, event):
         self.shiftFlag = True
-        print("shift click event")
-        print(event.widget)
+        try:
+            if isinstance(event.widget.master.master.master.master.master, ScriptFrame):
+                event.widget.master.set_active()
+                index = self.actions.index(event.widget.master)
+                self.indexes[index].config(self.active_config)
+
+                if len(self.active_rows) == 0:
+                    self.active_rows = [index, index]
+                elif index > self.active_rows[1]:
+                    for i in range(self.active_rows[1] + 1, index):
+                        self.indexes[i].config(self.active_config)
+                        self.actions[i].set_active()
+                    self.active_rows[1] = index
+                elif index < self.active_rows[0]:
+                    for i in range(index + 1, self.active_rows[0]):
+                        self.indexes[i].config(self.active_config)
+                        self.actions[i].set_active()
+                    self.active_rows[0] = index
+        except AttributeError:
+            pass
+        try:
+            if isinstance(event.widget.master.master.master.master, ScriptFrame):
+                event.widget.config(self.active_config)
+                index = self.indexes.index(event.widget)
+                self.actions[index].set_active()
+
+                if len(self.active_rows) == 0:
+                    self.active_rows.append(index)
+                elif index > self.active_rows[-1]:
+                    for i in range(self.active_rows[-1] + 1, index):
+                        self.indexes[i].config(self.active_config)
+                        self.actions[i].set_active()
+                    self.active_rows[1] = index
+                else:
+                    for i in range(index + 1, self.active_rows[-1]):
+                        self.indexes[i].config(self.active_config)
+                        self.actions[i].set_active()
+                    self.active_rows[0] = index
+        except AttributeError:
+            pass
         self.after(40, self.remove_flag)
 
     def remove_flag(self):
         self.shiftFlag = False
 
-    '''
-    def add_script(self, location, *args):
-        # new_script = sbf.ScriptButtonFrame(self.commandsFrame, self.dimensions, len(self.actions) + 1, args)
-        # new_script.pack(anchor='w')
-        num_btn = tk.Button(self.indexFrame, width=self.dimensions[0], text=len(self.actions) + 1, anchor='w', padx=6,
-                            bg='#ffffff', borderwidth=0, relief='flat')
-        num_btn.pack()
-        new_script = sbf.ScriptButtonFrame(self.valueFrame, self.dimensions, args)
-        if location == 'bottom':
-            new_script.pack(anchor='w')
-            self.actions.append(new_script)
-        elif location == 'top':
-            for elem in self.actions:
-                elem.pack_forget()
-            new_script.pack(anchor='w')
-            for elem in self.actions:
-                elem.pack(anchor='w')
-            self.actions.insert(0, new_script)
-        else:
-            for elem in self.actions:
-                elem.pack_forget()
-            self.actions.insert(int(location)-1, new_script)
-            for elem in self.actions:
-                elem.pack(anchor='w')
-    '''
+    def copy_event(self, event):
+        self.row_copy = self.active_rows
+
+    def paste_event(self, event):
+        if self.row_copy is None:
+            messagebox.showinfo('Error!',
+                                'Select a list of actions and copy them using Ctrl + c before you can paste actions.'
+                                + '\nThere are currently no copied actions stored.')
+            return
+        if len(self.active_rows) <= 0:
+            messagebox.showinfo('Error!',
+                                'To paste your copied rows, first select an action from the list.\n The copied actions'
+                                + 'will be appended after the last action or selected actions if more than one is'
+                                + 'selected.')
+            return
+        add_list = []
+        for i in range(self.row_copy[0], self.row_copy[1] + 1):
+            add_list.append(self.actions[i].copy())
+            num_btn = tk.Button(self.indexFrame, width=self.dimensions[0], text=len(self.indexes) + 1, anchor='w',
+                                padx=6,
+                                bg='#ffffff', borderwidth=0, relief='flat')
+            num_btn.pack()
+            self.indexes.append(num_btn)
+
+        for i in range(self.active_rows[1], len(self.actions)):
+            self.actions[i].grid_remove()
+            self.actions[i].grid_forget()
+        self.actions = self.actions[:self.active_rows[1]+1] + add_list + self.actions[self.active_rows[1]+1:]
+        for i in range(self.active_rows[1], len(self.actions)):
+            self.actions[i].grid(row=i, sticky='nsew')
+
+    def select_all_event(self, event):
+        if len(self.actions) <= 0:
+            return
+        self.active_rows = [0, len(self.actions)-1]
+        for i in range(self.active_rows[0], self.active_rows[1]+1):
+            self.actions[i].set_active()
+            self.indexes[i].config(self.active_config)
+
+    def move_up(self, rows):
+        if len(rows) <= 0:
+            messagebox.showinfo('Error!',
+                                'Select an action or group of actions and select the move up button to move the entire'
+                                + ' group up before the first selected item.')
+            return
+        if rows[0] == 0:
+            return
+        self.actions[rows[0]-1].grid(row=rows[1], sticky='news')
+        for i in range(rows[0], rows[1] + 1):
+            self.actions[i].grid(row=i-1, sticky='news')
+            self.actions[i-1], self.actions[i] = self.actions[i], self.actions[i-1]
+
+    def move_down(self, rows):
+        if len(rows) <= 0:
+            messagebox.showinfo('Error!',
+                                'Select an action or group of actions and select the move down button to move the '
+                                + 'entire group down after the last selected item.')
+            return
+        if rows[1] == len(self.actions)-1:
+            return
+        self.actions[rows[1]+1].grid(row=rows[0], sticky='news')
+        for i in range(rows[0], rows[1] + 1):
+            self.actions[i].grid(row=i+1, sticky='news')
+        self.actions.insert(rows[0], self.actions[rows[1]+1])
+        del self.actions[rows[1]+2]
+
+    def delete(self, rows):
+        if len(rows) <= 0:
+            messagebox.showinfo('Error!',
+                                'Select an action or group of actions and select the delete button to delete the entire'
+                                + ' group.')
+            return
+
+        for i in range(rows[0], rows[1] + 1):
+            self.actions[rows[0]].grid_remove()
+            self.actions[rows[0]].grid_forget()
+            del self.actions[rows[0]]
+            self.indexes[-1].grid_remove()
+            self.indexes[-1].grid_forget()
+            del self.indexes[-1]
+        for i in range(rows[0], len(self.actions)):
+            self.actions[i].grid(row=i, sticky='news')
+
+    def delete_all(self):
+        pass
 
 
 ''' Double click handler
