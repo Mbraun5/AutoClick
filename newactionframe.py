@@ -11,15 +11,15 @@ class NewActionFrame(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         tk.Frame.__init__(self, master, *args, **kwargs)
 
-        self.titleFrame = tk.Frame(self)
-        self.addFrame = tk.Frame(self)
+        self.configure(bg=Config.action_bg_color())
+        self.titleFrame = tk.Frame(self, bg=Config.action_bg_color())
+        self.addFrame = tk.Frame(self, bg=Config.action_bg_color())
 
         self.titleFrame.pack(side='top')
         self.addFrame.pack(side='left', fill='both', expand=True)
-        # allows widgets from column 5+ to use sticky
-        self.addFrame.columnconfigure(5, weight=1)
+        self.addFrame.columnconfigure(5, weight=1)  # allows widgets from column 5+ to use sticky
 
-        self.pixel = tk.PhotoImage(width=1, height=1)
+        self.pixel = tk.PhotoImage(width=1, height=1)   # used for button widgets so they can use pixel padding
         vcmd = (self.register(self.callback))
 
         self.activeConfig = {'bg': '#092327',
@@ -29,50 +29,48 @@ class NewActionFrame(tk.Frame):
                               'fg': '#F4FFFD'
                               }
 
-        self.titleLabel = tk.Label(self.titleFrame, text="Add New Action")
+        config = Config.title_label()
+        self.titleLabel = tk.Label(self.titleFrame, text="Add New Action", **config)
         self.titleLabel.pack()
 
-        self.xLabel = tk.Label(self.addFrame, text="X-Coordinate:")
-        self.yLabel = tk.Label(self.addFrame, text="Y-Coordinate:")
-        self.actionLabel = tk.Label(self.addFrame, text="Action Type:")
-        self.checkLabel = tk.Label(self.addFrame, text='Cursor back:')
-        self.delayLabel = tk.Label(self.addFrame, text='Delay before action:')
-        self.msLabel = tk.Label(self.addFrame, text='Milliseconds')
-        self.commentLabel = tk.Label(self.addFrame, text="Comment:")
-        self.randomLabel = tk.Label(self.addFrame, text="+ Random")
-        self.repeatLabel = tk.Label(self.addFrame, text="Repeat count:")
+        config = Config.std_label()
+        self.xLabel = tk.Label(self.addFrame, text="X-Coordinate:", **config)
+        self.yLabel = tk.Label(self.addFrame, text="Y-Coordinate:", **config)
+        self.actionLabel = tk.Label(self.addFrame, text="Action Type:", **config)
+        self.checkLabel = tk.Label(self.addFrame, text='Cursor back:', **config)
+        self.delayLabel = tk.Label(self.addFrame, text='Delay before action:', **config)
+        self.msLabel = tk.Label(self.addFrame, text='Milliseconds', **config)
+        self.commentLabel = tk.Label(self.addFrame, text="Comment:", **config)
+        self.randomLabel = tk.Label(self.addFrame, text="+ Random", **config)
+        self.repeatLabel = tk.Label(self.addFrame, text="Repeat count:", **config)
 
-        self.xLabel.grid(row=0, column=0, padx=5.5, sticky='e')
-        self.yLabel.grid(row=0, column=2, padx=5, sticky='e')
+        self.xLabel.grid(row=0, column=0, padx=5, pady=(2, 2), sticky='e')
+        self.yLabel.grid(row=0, column=2, padx=5, pady=(2, 2), sticky='e')
         self.actionLabel.grid(row=1, column=0, padx=5, pady=(2, 2), sticky='e')
         self.checkLabel.grid(row=2, column=0, padx=5, pady=(2, 2), sticky='e')
-        self.delayLabel.grid(row=2, column=2, padx=5, pady=(0, 2), sticky='w')
-        self.msLabel.grid(row=2, column=4, padx=5, pady=(0, 2), sticky='w')
-        self.commentLabel.grid(row=3, column=0, padx=5, sticky='e')
-        self.randomLabel.grid(row=2, column=5, padx="40 5", sticky='w')
-        self.repeatLabel.grid(row=3, column=7, padx=5, sticky='e')
+        self.delayLabel.grid(row=2, column=2, padx=5, pady=(2, 2), sticky='w')
+        self.msLabel.grid(row=2, column=4, padx=5, pady=(2, 2), sticky='w')
+        self.commentLabel.grid(row=3, column=0, padx=5, pady=(2, 2), sticky='e')
+        self.randomLabel.grid(row=2, column=5, padx="50 5", sticky='w')
+        self.repeatLabel.grid(row=3, column=7, padx=5, pady=(0, 5), sticky='e')
 
-        self.xEntry = tk.Entry(self.addFrame, width=6, font=('Helvetica', '9', 'bold'), validate='all',
-                               justify='center', validatecommand=(vcmd, '%P'))
-        self.yEntry = tk.Entry(self.addFrame, width=6, font=('Helvetica', '9', 'bold'), validate='all',
-                               justify='center', validatecommand=(vcmd, '%P'))
-        self.delayEntry = tk.Entry(self.addFrame, width=6, font=('Helvetica', '9', 'bold'), validate='all',
-                                   justify='center', validatecommand=(vcmd, '%P'))
-        self.randomEntry = tk.Entry(self.addFrame, width=5, font=('Helvetica', '9', 'bold'), validate='all',
-                                    justify='center', validatecommand=(vcmd, '%P'))
-        self.locationEntry = tk.Entry(self.addFrame, width=5, font=('Helvetica', '9', 'bold'), validate='all',
-                                      justify='center', validatecommand=(vcmd, '%P'))
-        self.repeatEntry = tk.Entry(self.addFrame, width=6, font=('Helvetica', '9', 'bold'), validate='all',
-                                    justify='center', validatecommand=(vcmd, '%P'))
-        self.commentEntry = tk.Entry(self.addFrame, font=('Helvetica', '9', 'bold'))
+        config = Config.entry_config()
+        config['validatecommand'] = (vcmd, '%P')
+        self.xEntry = tk.Entry(self.addFrame, **config)
+        self.yEntry = tk.Entry(self.addFrame, **config)
+        self.delayEntry = tk.Entry(self.addFrame, **config)
+        self.randomEntry = tk.Entry(self.addFrame, **config)
+        self.locationEntry = tk.Entry(self.addFrame, **config)
+        self.repeatEntry = tk.Entry(self.addFrame, **config)
+        self.commentEntry = tk.Entry(self.addFrame, font=Config.entry_font())
 
-        self.xEntry.grid(row=0, column=1, padx=5, sticky='ew')
-        self.yEntry.grid(row=0, column=3, padx=5.5, sticky='e')
-        self.delayEntry.grid(row=2, column=3, padx=5, sticky='ew')
-        self.randomEntry.grid(row=2, column=5, padx="0 20", sticky='w')
-        self.locationEntry.grid(row=2, column=6, padx="0 20", pady="0 3", columnspan=2)
-        self.repeatEntry.grid(row=3, column=8, padx=5, sticky='w')
-        self.commentEntry.grid(row=3, column=1, columnspan=5, padx=5, pady=(0, 5), sticky='we')
+        self.xEntry.grid(row=0, column=1, padx=5, sticky='w')
+        self.yEntry.grid(row=0, column=3, padx=5, sticky='e')
+        self.delayEntry.grid(row=2, column=3, padx=5, sticky='w')
+        self.repeatEntry.grid(row=3, column=8, padx=5, pady=(0, 5), sticky='w')
+        self.randomEntry.grid(row=2, column=5, padx='0 20', sticky='w')
+        self.locationEntry.grid(row=2, column=6, padx='0 20', pady='0 3', columnspan=2)
+        self.commentEntry.grid(row=3, column=1, columnspan=5, padx=5, pady='0 5', sticky='we')
 
         self.xEntry.bind("<FocusOut>", lambda _: self.check_entry(self.xEntry, pag.size()[0]))
         self.yEntry.bind("<FocusOut>", lambda _: self.check_entry(self.yEntry, pag.size()[1]))
@@ -82,24 +80,25 @@ class NewActionFrame(tk.Frame):
                                                                          len(self.master.script_frame.actions)+1))
         self.repeatEntry.bind("<FocusOut>", lambda _: self.check_entry(self.repeatEntry, 999999))
 
-        self.resetButton = tk.Button(self.addFrame, text='Reset', font=('Helvetica', '7'), image=self.pixel,
-                                     borderwidth=1, relief='flat', width=65, height=13, compound='center',
-                                     command=self.reset)
-        self.optionsChoiceButton = tk.Button(self.addFrame, text=' ... ', font=('Helvetica', '7'), image=self.pixel,
-                                             borderwidth=1, relief='flat', width=65, height=13, compound='center',
-                                             command=self.create_choice_menu)
-        self.optionButton = tk.Button(self.addFrame, text="           -- select an action --          " + u"\u2b9f",
-                                      font=('Helvetica', '9'), image=self.pixel, width=219, height=13,
-                                      compound='center', command=self.post_option_menu, borderwidth=1, relief='flat')
-        self.clearButton = tk.Button(self.addFrame, text='C', image=self.pixel, height=13, compound='center',
-                                     font=('Helvetica', '9'), relief='flat', borderwidth=1, command=self.clear)
-        self.addButtonOne = tk.Button(self.addFrame, text='Add to top', image=self.pixel, compound='center',
-                                      font=('Helvetica', '9'), width=85, command=lambda: self.add_command('top'))
-        self.addButtonTwo = tk.Button(self.addFrame, text='Add to bottom', image=self.pixel, compound='center',
-                                      font=('Helvetica', '9'), width=85, command=lambda: self.add_command('bottom'))
-        self.addButtonThree = tk.Button(self.addFrame, text='Add to location', image=self.pixel, compound='center',
-                                        font=('Helvetica', '9'), width=85,
+        config = Config.xtra_small_button()
+        config['image'] = self.pixel
+        self.resetButton = tk.Button(self.addFrame, text='Reset', command=self.reset, **config)
+        self.optionsChoiceButton = tk.Button(self.addFrame, text=' ... ', command=self.create_choice_menu, **config)
+
+        config = Config.std_button()
+        config['image'] = self.pixel
+        self.addButtonOne = tk.Button(self.addFrame, text='Add to top', command=lambda: self.add_command('top'),
+                                      **config)
+        self.addButtonTwo = tk.Button(self.addFrame, text='Add to bottom', command=lambda: self.add_command('bottom'),
+                                      **config)
+        self.addButtonThree = tk.Button(self.addFrame, text='Add to location', **config,
                                         command=lambda: self.add_command(self.locationEntry.get()))
+
+        config = Config.spc_button()
+        config['image'] = self.pixel
+        self.optionButton = tk.Button(self.addFrame, text="           -- select an action --          " + u"\u2b9f",
+                                      width=219, height=13, command=self.post_option_menu, **config)
+        self.clearButton = tk.Button(self.addFrame, text='C', height=13, command=self.clear, **config)
 
         self.resetButton.grid(row=0, column=4, padx=5, sticky='w')
         self.optionsChoiceButton.grid(row=1, column=4, padx=5, pady=(2, 2), sticky='w')
@@ -118,26 +117,7 @@ class NewActionFrame(tk.Frame):
         self.optionMenuActive = False
         self.ignoreEvent = False
         self.optionsChoiceMenuValues = 'default'
-
-        self.labels = [self.titleLabel,
-                       self.xLabel,
-                       self.yLabel,
-                       self.commentLabel,
-                       self.actionLabel,
-                       self.delayLabel,
-                       self.checkLabel,
-                       self.msLabel,
-                       self.repeatLabel,
-                       self.randomLabel]
-
-        self.buttons = [self.addButtonOne,
-                        self.addButtonTwo,
-                        self.addButtonThree,
-                        self.clearButton,
-                        self.resetButton,
-                        self.optionsChoiceButton,
-                        self.optionButton]
-
+        
         self.entries = [self.xEntry,
                         self.yEntry,
                         self.delayEntry,
@@ -201,27 +181,6 @@ class NewActionFrame(tk.Frame):
             entry.insert(0, str(value))
 
     def config(self):
-        self['bg'] = '#0E2B41'
-        self.addFrame['bg'] = '#0E2B41'
-        self.titleFrame['bg'] = '#0E2B41'
-
-        config = {'bg': '#0E2B41',
-                  'fg': '#F4FFFD',
-                  'font': ('Helvetica', '9')
-                  }
-        for label in self.labels:
-            label.config(config)
-        self.titleLabel.config(font=('Helvetica', '11', 'bold'))
-
-        config = {'bg': '#000F08',
-                  'fg': '#F4FFFD',
-                  'borderwidth': 1,
-                  'activebackground': '#092327',
-                  'activeforeground': '#86E7B8'
-                  }
-        for button in self.buttons:
-            button.config(config)
-
         self.checkBox['bg'] = '#F4FFFD'
         self.checkBox['activebackground'] = '#0E2B41'
         self.checkBox['highlightbackground'] = '#0E2B41'

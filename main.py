@@ -79,6 +79,7 @@ class Main(tk.Tk):
 
 
 if __name__ == "__main__":
+    '''
     events = []
     stopFlag = False
 
@@ -168,7 +169,7 @@ if __name__ == "__main__":
             m.scroll(events[i][1][0], events[i][1][1])
         else:
             time.sleep(events[i][1])
-
+    '''
     root = Main()
     img = ImageTk.PhotoImage(Image.open('sprites/icon.png'))
     root.tk.call('wm', 'iconphoto', root.get_protected(), img)
