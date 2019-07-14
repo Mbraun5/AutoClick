@@ -1,12 +1,12 @@
-import pyautogui as pag
-import tkinter as tk
 import navbar as nav
 import shortcutframe as scf
 import footer as f
 import newactionframe as naf
 import scriptframe as sf
-from PIL import ImageTk, Image
 
+import pyautogui as pag
+import tkinter as tk
+from PIL import ImageTk, Image
 import pynput.keyboard as pk
 import pynput.mouse as pm
 import time
@@ -88,7 +88,6 @@ if __name__ == "__main__":
             global start
             end = timer()
             elapsed = end - start
-            # print(elapsed)
             events.append(('sleep', elapsed))
             func(*args, **kwargs)
             start = timer()
@@ -108,7 +107,6 @@ if __name__ == "__main__":
 
     @time_difference
     def key_release(key):
-        print('here')
         events.append(('release', key))
 
     @time_difference
