@@ -91,3 +91,106 @@ class MeasureBlockTime:
                 pic.putpixel((i, j), (255, 255, 255))
     pic.save('sprites/icon.png')
     '''
+
+
+
+    '''
+    import pynput.keyboard as pk
+    import pynput.mouse as pm
+    import time
+    from functools import wraps
+    from timeit import default_timer as timer
+    
+    # Start of code
+    events = []
+    stopFlag = False
+
+    start = timer()
+
+    def time_difference(func):
+        @wraps(func)
+        def wrapper_inner(*args, **kwargs):
+            global start
+            end = timer()
+            elapsed = end - start
+            # print(elapsed)
+            events.append(('sleep', elapsed))
+            func(*args, **kwargs)
+            start = timer()
+        return wrapper_inner
+
+    @time_difference
+    def key_press(key):
+        global stopFlag
+        global k_listener
+        global m_listener
+        global a
+        if key == pk.Key.f11:
+            stopFlag = True
+            k_listener.stop()
+            m_listener.stop()
+        events.append(('press', key))
+
+    @time_difference
+    def key_release(key):
+        print('here')
+        events.append(('release', key))
+
+    @time_difference
+    def on_move(x, y):
+        events.append(('m_move', (x, y)))
+
+    @time_difference
+    def on_click(x, y, button, pressed):
+        if pressed:
+            events.append(('m_press', button))
+        else:
+            events.append(('m_release', button))
+
+    @time_difference
+    def on_scroll(x, y, dx, dy):
+        events.append(('m_scroll', (dx, dy)))
+        print(x, y, dx, dy)
+
+    def k_listen():
+        global k_listener
+        k_listener = pk.Listener(
+            on_press=key_press,
+            on_release=key_release
+        )
+        k_listener.start()
+
+    def m_listen():
+        global m_listener
+        m_listener = pm.Listener(
+            on_move=on_move,
+            on_click=on_click,
+            on_scroll=on_scroll
+        )
+        m_listener.start()
+
+    k = pk.Controller()
+    m = pm.Controller()
+
+    k_listen()
+    m_listen()
+
+    while not stopFlag:
+        time.sleep(0.1)
+
+    for i in range(len(events)):
+        if events[i][0] == 'press':
+            k.press(events[i][1])
+        elif events[i][0] == 'release':
+            k.release(events[i][1])
+        elif events[i][0] == 'm_move':
+            m.position = events[i][1]
+        elif events[i][0] == 'm_press':
+            m.press(events[i][1])
+        elif events[i][0] == 'm_release':
+            m.release(events[i][1])
+        elif events[i][0] == 'm_scroll':
+            m.scroll(events[i][1][0], events[i][1][1])
+        else:
+            time.sleep(events[i][1])
+    '''

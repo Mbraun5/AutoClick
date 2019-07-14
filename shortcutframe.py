@@ -41,6 +41,8 @@ class ShortcutFrame(tk.Frame):
         self.startStopTextTwo.grid_remove()
 
         keyboard.on_press(self.handle_press)
+        keyboard.on_release(self.handle_release)
+        #keyboard.
         self.textDict = {self.getPositionText: 'None',
                          self.startStopText: 'None'}
         self.textMap = {self.getPositionText: self.getPositionTextTwo,
@@ -76,6 +78,7 @@ class ShortcutFrame(tk.Frame):
         self.config()
 
     def handle_press(self, key):
+        print(key.name)
         if key.name == self.assignMap[self.getPositionText]:
             self.master.newActionFrame.set_current_xy()
         elif key.name == self.assignMap[self.startStopText]:
@@ -104,6 +107,9 @@ class ShortcutFrame(tk.Frame):
             self.textMap[widget].focus()
         except Exception as e:
             print(e)
+
+    def handle_release(self, key):
+        print(key.name)
 
     def lose_focus(self, text):
         text.config(state='normal')
