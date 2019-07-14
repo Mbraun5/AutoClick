@@ -3,6 +3,7 @@ import shortcutframe as scf
 import footer as f
 import newactionframe as naf
 import scriptframe as sf
+from config import Config
 
 import pyautogui as pag
 import tkinter as tk
@@ -17,8 +18,7 @@ from timeit import default_timer as timer
 class Main(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
-
-        self.configure(background='#465362')
+        self.configure(background=Config.main_bg_color())
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
 
@@ -38,12 +38,13 @@ class Main(tk.Tk):
         self.footer = f.Footer(self)
         self.footer.grid(row=4, column=0, sticky='sew')
 
-        self.bind('<Alt_L>f', self.navbar.keyevent)
-        self.bind('<Alt_L>e', self.navbar.keyevent)
-        self.bind('<Alt_L>v', self.navbar.keyevent)
-        self.bind('<Alt_R>f', self.navbar.keyevent)
-        self.bind('<Alt_R>e', self.navbar.keyevent)
-        self.bind('<Alt_R>v', self.navbar.keyevent)
+        # Keyboard bindings to handle events.
+        self.bind('<Alt_L>f', self.navbar.alt_key_event)
+        self.bind('<Alt_L>e', self.navbar.alt_key_event)
+        self.bind('<Alt_L>v', self.navbar.alt_key_event)
+        self.bind('<Alt_R>f', self.navbar.alt_key_event)
+        self.bind('<Alt_R>e', self.navbar.alt_key_event)
+        self.bind('<Alt_R>v', self.navbar.alt_key_event)
         self.bind('<KeyRelease>', self.key_release_event)
         self.bind('<ButtonRelease-1>', self.button_release_event)
         self.bind('<Button-1>', self.button_click_event)
@@ -63,7 +64,7 @@ class Main(tk.Tk):
         del event
 
     def key_release_event(self, event):
-        self.navbar.altevent(event)
+        self.navbar.key_release_event(event)
         self.newActionFrame.key_event(event)
 
     def button_click_event(self, event):
@@ -72,6 +73,7 @@ class Main(tk.Tk):
     def shift_event(self, event):
         self.script_frame.shift_click_event(event)
 
+    # Accesses protected variable _w to change icon
     def get_protected(self):
         return self._w
 

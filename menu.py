@@ -1,19 +1,13 @@
 import tkinter as tk
+from config import Config
 
 
 class Menu(tk.Frame):
-    def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self)
-        self.passiveConfig = {'bg': args[1],
-                              'fg': args[2],
-                              'activebackground': args[1],
-                              'activeforeground': args[2]
-                              }
-        self.activeConfig = {'bg': args[3],
-                              'fg': args[4],
-                              'activebackground': args[3],
-                              'activeforeground': args[4]
-                             }
+    def __init__(self, master, *args, **kwargs):
+        tk.Frame.__init__(self, master)
+        self.activeConfig = Config.nav_active_config()
+        self.passiveConfig = Config.nav_passive_config()
+
         self.command_list = []
         self.num_elements = 0
         self.activeIndex = None
