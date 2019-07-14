@@ -15,8 +15,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="323">
               <caret line="109" selection-start-line="109" selection-end-line="109" />
+=======
+            <state relative-caret-position="272">
+              <caret line="106" column="37" selection-start-line="106" selection-start-column="37" selection-end-line="106" selection-end-column="37" />
+>>>>>>> fec4ddb1f52962d8a581255641a3a1020897ae92
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -30,6 +35,20 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
+=======
+        <entry file="file://$PROJECT_DIR$/newactionframe.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+>>>>>>> fec4ddb1f52962d8a581255641a3a1020897ae92
         <entry file="file://$PROJECT_DIR$/optionmenu.py">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
@@ -278,6 +297,7 @@
     <entry file="file://$PROJECT_DIR$/utils.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+<<<<<<< HEAD
     <entry file="file://$USER_HOME$/Downloads/AutoClick-master/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-633">
@@ -291,6 +311,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="109" selection-start-line="109" selection-end-line="109" />
+=======
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="106" column="37" selection-start-line="106" selection-start-column="37" selection-end-line="106" selection-end-column="37" />
+>>>>>>> fec4ddb1f52962d8a581255641a3a1020897ae92
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
