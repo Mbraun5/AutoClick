@@ -5,14 +5,32 @@ class Config:
 
     @staticmethod
     def light_text_color():
+        # white
         return '#F4FFFD'
 
     @staticmethod
+    def dark_button_bg_color():
+        # dark green/black
+        return '#000F08'
+
+    @staticmethod
+    def light_button_bg_color():
+        # lighter green/black
+        return '#092327'
+
+    @staticmethod
+    def light_button_fg_color():
+        # light turquoise
+        return '#86E7B8'
+
+    @staticmethod
     def main_bg_color():
+        # grey/blue
         return '#465362'
 
     @staticmethod
     def nav_bg_color():
+        # navy blue
         return '#011936'
 
     @staticmethod

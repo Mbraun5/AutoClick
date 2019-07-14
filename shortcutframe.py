@@ -142,7 +142,6 @@ class ShortcutFrame(tk.Frame):
         if isinstance(widget, tk.Text) and widget.master == self.bodyFrame:
             widget.focus()
 
-    # 465362
     def config(self):
         self['bg'] = '#0E2B41'
         self.bodyFrame['bg'] = '#0E2B41'
