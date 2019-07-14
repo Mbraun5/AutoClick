@@ -21,6 +21,8 @@ class NavBar(tk.Frame):
         self.fileButton.pack(side='left')
         self.editButton.pack(side='left')
         self.viewButton.pack(side='left')
+        self.buttonList = [self.fileButton, self.editButton, self.viewButton]
+        self.buttonIndex = 0
 
         self.fileMenu = m.Menu(self.master)
         self.fileMenu.add_command(label="New Script", command=lambda: self.placeholder(self.fileMenu, "New Script"))
@@ -39,22 +41,19 @@ class NavBar(tk.Frame):
 
         self.activeButton = None
         self.activeMenu = None
+        self.ignoreAltEvent = False
+
         self.menuDict = {self.fileButton: self.fileMenu,
                          self.editButton: self.editMenu,
                          self.viewButton: self.viewMenu}
-
         # x-padding amount to line menu options up with corresponding menu labels
         self.menuPad = {self.fileMenu: 0,
                         self.editMenu: 23.5,
                         self.viewMenu: 51}
 
-        self.buttonList = [self.fileButton, self.editButton, self.viewButton]
-        self.buttonIndex = 0
-
         self.fileButton.bind("<Enter>", lambda _: self.check_focus(self.fileButton))
         self.editButton.bind("<Enter>", lambda _: self.check_focus(self.editButton))
         self.viewButton.bind("<Enter>", lambda _: self.check_focus(self.viewButton))
-        self.ignoreAltEvent = False
 
     def post(self, button, menu):
         '''

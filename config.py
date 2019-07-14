@@ -1,7 +1,11 @@
 class Config:
-    # Bg color for root frame
-    def __init__(self):
-        self.main_bg_color = '#465362'
+    @staticmethod
+    def font_style():
+        return 'Helvetica'
+
+    @staticmethod
+    def light_text_color():
+        return '#F4FFFD'
 
     @staticmethod
     def main_bg_color():
@@ -21,9 +25,12 @@ class Config:
 
     @staticmethod
     def nav_passive_config():
-        return {'bg': '#011936',
-                'fg': '#F4FFFD',
-                'activebackground': '#011936',
-                'activeforeground': '#F4FFFD'
+        return {'bg': Config.nav_bg_color(),
+                'fg': Config.light_text_color(),
+                'activebackground': Config.nav_bg_color(),
+                'activeforeground': Config.light_text_color()
                 }
 
+    @staticmethod
+    def font_small():
+        return '{}, 8'.format(Config.font_style())
