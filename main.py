@@ -106,7 +106,6 @@ if __name__ == "__main__":
             m_listener.stop()
         events.append(('press', key))
 
-
     @time_difference
     def key_release(key):
         print('here')
