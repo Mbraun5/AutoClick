@@ -39,6 +39,11 @@ class Config:
         return '#0E2B41'
 
     @staticmethod
+    def highlight_grey():
+        #dark grey
+        return '#404040'
+
+    @staticmethod
     def nav_active_config():
         return {'activebackground': '#ED254E',
                 'activeforeground': '#F9DC5C',

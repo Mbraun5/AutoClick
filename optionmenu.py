@@ -1,25 +1,25 @@
 import tkinter as tk
+from config import Config
 
 
 class OptionMenu(tk.Frame):
-    def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, **kwargs)
-        self.master = args[0]
+    def __init__(self, master, *args, **kwargs):
+        tk.Frame.__init__(self, master, *args, **kwargs)
 
-        self.passiveConfig = {'bg': args[1],
-                              'fg': args[2],
-                              'activebackground': args[1],
-                              'activeforeground': args[2]
+        print(self.master)
+
+        self.passiveConfig = {'bg': Config.dark_button_bg_color(),
+                              'fg': Config.light_text_color(),
+                              'activebackground': Config.dark_button_bg_color(),
+                              'activeforeground': Config.light_text_color()
                               }
-        self.activeConfig = {'bg': args[3],
-                             'fg': args[4],
-                             'activebackground': args[3],
-                             'activeforeground': args[4]
+        self.activeConfig = {'bg': Config.light_button_bg_color(),
+                             'fg': Config.light_button_fg_color(),
+                             'activebackground': Config.light_button_bg_color(),
+                             'activeforeground': Config.light_button_fg_color()
                              }
 
-        self['bg'] = self.passiveConfig['bg']
-        self['highlightbackground'] = '#404040'
-        self['highlightthickness'] = 1
+        self.config(bg=Config.dark_button_bg_color(), highlightbackground=Config.highlight_grey(), highlightthickness=1)
 
         self.scrollbar = tk.Scrollbar(self, orient='vertical')
         # self.scrollbar.pack(fill='y', side='right', expand='false')

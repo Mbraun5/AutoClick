@@ -60,7 +60,7 @@ class Main(tk.Tk):
     def button_release_event(self, event):
         self.navbar.button_event(event)
         self.shortcut_frame.button_event()
-        self.newActionFrame.button_event()
+        self.newActionFrame.button_event(event)
         del event
 
     def key_release_event(self, event):
@@ -170,6 +170,7 @@ if __name__ == "__main__":
         else:
             time.sleep(events[i][1])
     '''
+
     root = Main()
     img = ImageTk.PhotoImage(Image.open('sprites/icon.png'))
     root.tk.call('wm', 'iconphoto', root.get_protected(), img)

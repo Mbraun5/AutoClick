@@ -45,7 +45,6 @@ class Actions:
 
     def start(self):
         for elem in self.script:
-            print(self.exit_flag)
             if self.exit_flag:
                 return
             self.func_map[elem.name](elem.x, elem.y, elem.curs_back, elem.delay, elem.repeat)
