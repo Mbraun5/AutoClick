@@ -55,8 +55,7 @@ class OptionsChoiceMenu(tk.Toplevel):
         self.focus_set()
         for item in self.list_boxes:
             item.select_clear(0, 'end')
-        x, y = pag.position()
-        widget = self.winfo_containing(x, y)
+        widget = event.widget
         try:
             if not isinstance(widget, OptionsChoiceMenu) and not isinstance(widget.master, OptionsChoiceMenu) and \
                     not isinstance(widget.master.master, OptionsChoiceMenu):
@@ -113,10 +112,10 @@ class OptionsChoiceMenu(tk.Toplevel):
 
     def set_checkboxes(self):
         for i in range(len(self.descriptions)):
-            newCheckBox = c.CheckBox(self.check_box_frame, highlightthickness=0, text='', image=self.pixel, width=10,
-                                     height=12, relief='sunken', borderwidth=1, compound='center')
-            newCheckBox.grid(row=i, column=0)
-            self.checkboxes.append(newCheckBox)
+            new_check_box = c.CheckBox(self.check_box_frame, highlightthickness=0, text='', image=self.pixel, width=10,
+                                       height=12, relief='sunken', borderwidth=1, compound='center')
+            new_check_box.grid(row=i, column=0)
+            self.checkboxes.append(new_check_box)
 
         if self.master.optionsChoiceMenuValues == 'default':
             self.check_all()
