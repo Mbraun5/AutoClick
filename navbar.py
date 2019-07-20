@@ -56,21 +56,21 @@ class NavBar(tk.Frame):
         self.viewButton.bind("<Enter>", lambda _: self.check_focus(self.viewButton))
 
     def post(self, button, menu):
-        '''
+        """
         Posts menu frame below corresponding navbar button
         :param button: tk.Button
         :param menu: m.Menu - child class of tk.Frame
         :return: None
-        '''
+        """
         button.config(**self.activeConfig)
         menu.post(self.menuPad[menu], 0)
 
     def key_release_event(self, event):
-        '''
+        """
         Maps actions based on key down events instantiated by user.
         :param event: tkinter event object
         :return: None
-        '''
+        """
         # alt keypress
         if event.keycode == 18:
             # checks flag to prevent keyboard navigation events from unposting menu
@@ -94,11 +94,11 @@ class NavBar(tk.Frame):
             self.activeMenu.change_index("down")
 
     def alt_key_event(self, event):
-        '''
+        """
         Maps all alt + key event actions
         :param event: tkinter event object
         :return: None
-        '''
+        """
         if self.activeButton is not None:
             self.activeButton.config(**self.passiveConfig)
             self.activeMenu.unpost()
@@ -120,11 +120,11 @@ class NavBar(tk.Frame):
         self.ignoreAltEvent = True
 
     def button_event(self, event):
-        '''
+        """
         Maps actions from button release events.
         :param event: tkinter event object
         :return: None
-        '''
+        """
         widget = event.widget
 
         # If user clicked navbar button and there currently is not another active button...
@@ -142,12 +142,12 @@ class NavBar(tk.Frame):
                 self.activeButton = None
 
     def check_focus(self, button):
-        '''
+        """
         Changes state of navbar button to active if it is scrolled over while there is another navbar button selected.
         The button that is scrolled off of is set to passive. This is for aesthetic purposes.
         :param button:
         :return:
-        '''
+        """
         if self.activeButton is not None:
             self.activeButton.config(**self.passiveConfig)
             self.activeMenu.unpost()
@@ -157,13 +157,13 @@ class NavBar(tk.Frame):
             self.activeMenu = self.menuDict[button]
 
     def change_menu(self, direction):
-        '''
+        """
         Provides functionality for users to navigate navbar using keyboard presses only.
         Left and right arrows change the menu being viewed.
         This function is only called if there is an active button.
         :param direction: str
         :return: None
-        '''
+        """
         self.activeButton.config(**self.passiveConfig)
         self.activeMenu.unpost()
         if direction == "right":

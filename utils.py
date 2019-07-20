@@ -33,7 +33,7 @@ class MeasureBlockTime:
             gc.disable()
         self.start_time = timeit.default_timer()
 
-    def __exit__(self,ty,val,tb):
+    def __exit__(self, ty, val, tb):
         self.elapsed = timeit.default_timer() - self.start_time
         if self.disable_gc and self.gcold:
             gc.enable()
@@ -43,7 +43,7 @@ class MeasureBlockTime:
         # re-raise any exceptions
         return False
 
-    '''
+    """
     # Same use case
     li = []
     for i in range(10000000):
@@ -71,9 +71,9 @@ class MeasureBlockTime:
     test1(li)
     test2(li)
     test3(li)
-    '''
+    """
 
-    '''
+    """
     Image Editing
     pic = Image.open('sprites/icon_orig.png').convert('RGB')
     for i in range(48):
@@ -90,11 +90,9 @@ class MeasureBlockTime:
             else:
                 pic.putpixel((i, j), (255, 255, 255))
     pic.save('sprites/icon.png')
-    '''
+    """
 
-
-
-    '''
+    """
     import pynput.keyboard as pk
     import pynput.mouse as pm
     import time
@@ -193,4 +191,4 @@ class MeasureBlockTime:
             m.scroll(events[i][1][0], events[i][1][1])
         else:
             time.sleep(events[i][1])
-    '''
+    """

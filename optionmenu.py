@@ -40,42 +40,42 @@ class OptionMenu(tk.Frame):
         self.pixel = tk.PhotoImage(height=1, width=1)
 
     def configure_interior_window(self, event):
-        '''
+        """
         Sets scroll region for canvas based on widget size
         :param event: tk.Event
         :return: None
-        '''
+        """
         size = (self.btnFrame.winfo_reqwidth(), self.btnFrame.winfo_reqheight())
         self.canvas.config(scrollregion='0 0 %s %s' % size)
         self.btnFrame.bind('<Configure>', self.configure_interior_window)
 
     def configure_canvas(self, event):
-        '''
+        """
         Configures button window to size of canvas
         :param event: tk.Event
         :return: None
-        '''
+        """
         if self.btnFrame.winfo_reqwidth() != self.canvas.winfo_reqwidth():
             self.canvas.itemconfigure(self.btnFrameWindow, width=self.canvas.winfo_width())
         self.canvas.bind('<Configure>', self.configure_canvas)
 
     def mouse_event(self, event):
-        '''
+        """
         Event handler for mouse wheel over buttons
         :param event: tk.Event
         :return: None
-        '''
+        """
         if self.winfo_reqheight() < self.canvas.winfo_reqheight():
             return
         delta = -1 * int(event.delta / 120)
         self.canvas.yview("scroll", delta, "units")
 
     def add_command(self, label):
-        '''
+        """
         Adds command to option menu
         :param label: string - button label
         :return: None
-        '''
+        """
         new_button = tk.Button(self.btnFrame, text=label, borderwidth=0, image=self.pixel, **self.passiveConfig,
                                justify='center', anchor='w', padx=5, width=226, height=19, compound='center',
                                command=lambda: self.master.newActionFrame.set_option_button(label))
@@ -87,22 +87,22 @@ class OptionMenu(tk.Frame):
         self.command_list.append(new_button)
 
     def add_separator(self):
-        '''
+        """
         Adds separator to menu for aesthetic purposes
         :return: None
-        '''
+        """
         new_button = tk.Button(self, text='-' * 100, state='disabled', borderwidth=0, **self.passiveConfig, anchor='w',
                                font="Helvetica 2", justify='left')
         new_button.grid(row=self.num_elements, column=0, sticky='we')
         self.num_elements += 1
 
     def post(self, padx, pady):
-        '''
+        """
         Posts option menu to main frame. Size of window depends on number of buttons in command list
         :param padx: int - x padding
         :param pady: int - y padding
         :return: None
-        '''
+        """
         if len(self.command_list) * 20 < 200:
             self.canvas.config(height=len(self.command_list) * 23)
         else:
@@ -114,11 +114,11 @@ class OptionMenu(tk.Frame):
         self.activeIndex = -1
 
     def unpost(self):
-        '''
+        """
         Removes optionmenu from main window.
         :return: None
-        '''
-        if not self.activeIndex:
+        """
+        if self.activeIndex is None:
             return
         self.grid_remove()
         self.command_list[self.activeIndex].config(self.passiveConfig)
@@ -126,11 +126,11 @@ class OptionMenu(tk.Frame):
         self.master.newActionFrame.optionButton.config(self.master.newActionFrame.passiveConfig)
 
     def hover_on(self, button):
-        '''
+        """
         Event handler for hovering over buttons
         :param button: tk.Button
         :return: None
-        '''
+        """
         button.config(**self.activeConfig)
         if self.activeIndex != -1:
             try:
@@ -140,20 +140,20 @@ class OptionMenu(tk.Frame):
         self.activeIndex = self.command_list.index(button)
 
     def hover_off(self):
-        '''
+        """
         Event handler for hovering off buttons
         :return: None
-        '''
+        """
         if self.activeIndex != -1 and self.activeIndex is not None:
             self.command_list[self.activeIndex].config(**self.passiveConfig)
             self.activeIndex = -1
 
     def change_index(self, direction):
-        '''
+        """
         Event handler for users pressing up and down arrow keys while menu has focus. Allows keyboard control
         :param direction: string - 'up' or 'down'
         :return: None
-        '''
+        """
         if direction == "up":
             if self.activeIndex == 0:
                 return
@@ -172,10 +172,10 @@ class OptionMenu(tk.Frame):
             self.command_list[self.activeIndex].config(**self.activeConfig)
 
     def add_options(self):
-        '''
+        """
         Adds list of options to menu based on user selections from optionsChoiceMenuValues menu.
         :return: None
-        '''
+        """
         for btn in self.command_list:
             btn.grid_remove()
             btn.grid_forget()
@@ -183,25 +183,7 @@ class OptionMenu(tk.Frame):
         self.num_elements = 0
         self.command_list = []
         if self.master.newActionFrame.optionsChoiceMenuValues == 'default':
-            values = ['Left Click',
-                      'Ctrl + Click',
-                      'Shift + Click',
-                      'Alt + Click',
-                      'Ctrl + Alt + Click',
-                      'Middle Click',
-                      'Right Click',
-                      'Ctrl + Right Click',
-                      'Alt + Right Click',
-                      'Ctrl + Alt + Right Click',
-                      'Double Click',
-                      'Double Right Click',
-                      'Begin Dragging - Left Click Down',
-                      'End Dragging - Left Click Up',
-                      'Move Mouse',
-                      'Move Mouse By Offset',
-                      'Press Keyboard Key',
-                      'Release Keyboard Key',
-                      'Press Spacebar']
+            values = Config.get_command_list()
             for value in values:
                 self.add_command(value)
         else:

@@ -138,3 +138,49 @@ class Config:
                 'fg': Config.light_text_color(),
                 'font': Config.title_font()
                 }
+
+    @staticmethod
+    def get_command_list():
+        return ['Left Click',
+                'Ctrl + Click',
+                'Shift + Click',
+                'Alt + Click',
+                'Ctrl + Alt + Click',
+                'Middle Click',
+                'Right Click',
+                'Ctrl + Right Click',
+                'Alt + Right Click',
+                'Ctrl + Alt + Right Click',
+                'Double Click',
+                'Double Right Click',
+                'Begin Dragging - Left Click Down',
+                'End Dragging - Left Click Up',
+                'Move Mouse',
+                'Move Mouse By Offset',
+                'Press Keyboard Key',
+                'Release Keyboard Key',
+                'Press Spacebar'
+                ]
+
+    @staticmethod
+    def get_description_list():
+        return ['Press left click at x, y position.',
+                'Press Ctrl + Left click at x, y position.',
+                'Press Shift + Left Click at x, y position.',
+                'Press Alt + Left Click at x, y position.',
+                'Press Ctrl + Alt + Left Click at x, y position.',
+                'Press Middle Click at x, y position.',
+                'Press Right Click at x, y position.',
+                'Press Ctrl + Right Click at x, y position.',
+                'Press Alt + Right Click at x, y position.',
+                'Press Ctrl + Alt + Right Click at x, y position.',
+                'Double Left Click at x, y position.',
+                'Double Right Click at x, y position.',
+                'Press Left Click down at x, y position. Follow this with Move Mouse action to simulate dragging.',
+                'Release Left Click down at x, y, position.',
+                'Move Mouse to x, y location.',
+                'Mose Mouse by x, y relative offset.',
+                'Presses keyboard key down.',
+                'Releases keyboard key press.',
+                'Presses spacebar key.'
+                ]

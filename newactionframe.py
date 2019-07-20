@@ -128,12 +128,12 @@ class NewActionFrame(tk.Frame):
                         self.randomEntry]
 
     def add_command(self, location, execute=False):
-        '''
+        """
         Adds command to script frame based on local parameters.
         :param location: 'top', 'bottom', or int value - sets where to add commands to script frame
         :param execute: bool - flag variable to force tkinter to update entries before adding command
         :return: None
-        '''
+        """
         if not execute:         # Allows for entries to be checked prior to command being added.
             if location != 'top' and location != 'bottom':
                 self.after(75, lambda: self.add_command(self.locationEntry.get(), True))
@@ -170,23 +170,23 @@ class NewActionFrame(tk.Frame):
 
     @staticmethod
     def callback(p):
-        '''
+        """
         Checks entry values as they are input
         :param p: string - one character at a time is input
         :return: None
-        '''
+        """
         if p == '' or str.isdigit(p):
             return True
         return False
 
     @staticmethod
     def check_entry(entry, value):
-        '''
+        """
         Checks entry values when entry loses focus
         :param entry: tk.Entry
         :param value: int - max entry value allowable
         :return: None
-        '''
+        """
         if entry.get() == '':
             return
         if int(entry.get()) <= 0:
@@ -197,11 +197,11 @@ class NewActionFrame(tk.Frame):
             entry.insert(0, str(value))
 
     def button_event(self, event):
-        '''
+        """
         Event handler for left click releases
         :param event: tk.Event
         :return: None
-        '''
+        """
         widget = event.widget
         if self.optionMenuActive and widget != self.optionMenu and not self.ignoreEvent:
             self.optionMenu.unpost()
@@ -217,30 +217,30 @@ class NewActionFrame(tk.Frame):
             return
 
     def key_event(self, event):
-        '''
+        """
         alt key event handler
         :param event: tk.Event
         :return: None
-        '''
+        """
         if event.keycode == 18:
             self.optionMenu.unpost()
             self.optionMenuActive = False
 
     def option_menu_command(self, label):
-        '''
+        """
         Sets option menu label
         :param label: string
         :return: None
-        '''
+        """
         self.optionButton.config(text=label)
         self.optionMenu.unpost()
         self.optionMenuActive = False
         
     def post_option_menu(self):
-        '''
+        """
         Button handler for option menu
         :return: None
-        '''
+        """
         if self.optionMenuActive:
             self.optionMenu.unpost()
             self.optionMenuActive = False
@@ -251,19 +251,19 @@ class NewActionFrame(tk.Frame):
             self.ignoreEvent = True
 
     def create_choice_menu(self):
-        '''
+        """
         Button handler for choice menu button. Creates the choice menu
         :return: None
-        '''
+        """
         x = self.master.winfo_x() + int(self.master.winfo_width() / 4)
         y = self.master.winfo_y() + int(self.master.winfo_height() / 4)
         options_choice_menu = ocm.OptionsChoiceMenu(self, x, y)
 
     def reset(self):
-        '''
+        """
         Button handler for reset button. Resets all entries (including checkbox) and sets the option button to default.
         :return: None
-        '''
+        """
         for entry in self.entries:
             entry.delete(0, 'end')
         self.optionButton.config(text="           -- select an action --          " + u"\u2b9f")
@@ -271,32 +271,32 @@ class NewActionFrame(tk.Frame):
             self.checkBox.switch()
 
     def reset_option_button(self):
-        '''
+        """
         Sets option button to default
         :return: None
-        '''
+        """
         self.optionButton.config(text="           -- select an action --          " + u"\u2b9f")
 
     def set_option_button(self, label):
-        '''
+        """
         Sets option button to label
         :param label: string
         :return: None
-        '''
+        """
         self.optionButton.config(text=label)
 
     def clear(self):
-        '''
+        """
         Button handler for clear button
         :return: None
-        '''
+        """
         self.commentEntry.delete(0, 'end')
 
     def set_current_xy(self):
-        '''
+        """
         Event handler for shortcut menu binding selected by user. Updates x, y labels with current x, y position
         :return: None
-        '''
+        """
         self.xEntry.delete(0, 'end')
         self.xEntry.insert('end', pag.position()[0])
         self.yEntry.delete(0, 'end')

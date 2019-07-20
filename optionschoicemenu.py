@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import pyautogui as pag
 import checkbox as c
+from config import Config
 
 
 class OptionsChoiceMenu(tk.Toplevel):
@@ -64,49 +65,12 @@ class OptionsChoiceMenu(tk.Toplevel):
             self.bell()
 
     def set_commands(self):
-        self.commands = ['Left Click',
-                         'Ctrl + Click',
-                         'Shift + Click',
-                         'Alt + Click',
-                         'Ctrl + Alt + Click',
-                         'Middle Click',
-                         'Right Click',
-                         'Ctrl + Right Click',
-                         'Alt + Right Click',
-                         'Ctrl + Alt + Right Click',
-                         'Double Click',
-                         'Double Right Click',
-                         'Begin Dragging - Left Click Down',
-                         'End Dragging - Left Click Up',
-                         'Move Mouse',
-                         'Move Mouse By Offset',
-                         'Press Keyboard Key',
-                         'Release Keyboard Key',
-                         'Press Spacebar']
-
+        self.commands = Config.get_command_list()
         for command in self.commands:
             self.list_boxes[0].insert('end', command)
 
     def set_descriptions(self):
-        self.descriptions = ['Press left click at x, y position.',
-                             'Press Ctrl + Left click at x, y position.',
-                             'Press Shift + Left Click at x, y position.',
-                             'Press Alt + Left Click at x, y position.',
-                             'Press Ctrl + Alt + Left Click at x, y position.',
-                             'Press Middle Click at x, y position.',
-                             'Press Right Click at x, y position.',
-                             'Press Ctrl + Right Click at x, y position.',
-                             'Press Alt + Right Click at x, y position.',
-                             'Press Ctrl + Alt + Right Click at x, y position.',
-                             'Double Left Click at x, y position.',
-                             'Double Right Click at x, y position.',
-                             'Press Left Click down at x, y position. Follow this with Move Mouse action to simulate dragging.',
-                             'Release Left Click down at x, y, position.',
-                             'Move Mouse to x, y location.',
-                             'Mose Mouse by x, y relative offset.',
-                             'Presses keyboard key down.',
-                             'Releases keyboard key press.',
-                             'Presses spacebar.']
+        self.descriptions = Config.get_description_list()
         for description in self.descriptions:
             self.list_boxes[1].insert('end', description)
 

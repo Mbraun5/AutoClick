@@ -346,7 +346,7 @@ class ScriptFrame(tk.Frame):
         self.active = False
 
 
-''' Double click handler
+""" Double click handler
 from tkinter import *
 
 def mouse_click(event):
@@ -374,4 +374,4 @@ double_click_flag = False
 aw.bind('<Button-1>', mouse_click) # bind left mouse click
 aw.bind('<Double-1>', double_click) # bind double left clicks
 aw.mainloop()
-'''
+"""
