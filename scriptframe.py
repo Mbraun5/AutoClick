@@ -1,8 +1,9 @@
 import tkinter as tk
-import scriptButtonFrame as sbf
+import scriptButtonFrame as sBF
 from tkinter import messagebox
 import threading as t
 import actions as a
+from config import Config
 
 
 class ScriptFrame(tk.Frame):
@@ -14,27 +15,28 @@ class ScriptFrame(tk.Frame):
         self.scrollbar = tk.Scrollbar(self, orient='vertical')
         self.scrollbar.pack(fill='y', side='right', expand=False, padx="0 82")
 
-        self.titleFrame = tk.Frame(self, bg='#FFFFFF', height=20)
+        self.titleFrame = tk.Frame(self, bg=Config.grey_script_title_color(), height=20)
         self.titleFrame.pack(anchor='n', fill='x')
 
         titles = ['#', 'Action', 'X-Coor', 'Y-Coor', 'Cursor Back?', 'Delay (ms)', 'Repeat', 'Comment']
         self.dimensions = [5, 15, 5, 5, 15, 10, 10, 10]
         self.title_labels = []
         for index, title in enumerate(titles):
-            new_label = tk.Label(self.titleFrame, text=title, width=self.dimensions[index], font=('Helvetica', '9'),
-                                 anchor='w')
+            new_label = tk.Label(self.titleFrame, text=title, width=self.dimensions[index], font=Config.font_medium(),
+                                 anchor='w', bg=Config.grey_script_title_color())
             new_label.pack(side='left', padx=5)
             self.title_labels.append(new_label)
         self.title_labels[len(titles)-1].pack(side='left', fill='x', expand=True, padx="5 0")
 
-        self.canvas = tk.Canvas(self, bd=0, yscrollcommand=self.scrollbar.set, highlightthickness=0, bg='#ffffff')
+        self.canvas = tk.Canvas(self, bd=0, yscrollcommand=self.scrollbar.set, highlightthickness=0,
+                                bg=Config.light_text_color())
         self.canvas.pack(fill='both', expand=True)
         self.scrollbar.config(command=self.canvas.yview)
 
         self.canvas.xview_moveto(0)
         self.canvas.yview_moveto(0)
 
-        self.commandsFrame = tk.Frame(self.canvas)
+        self.commandsFrame = tk.Frame(self.canvas, bg=Config.light_text_color())
         self.commandsFrameWindow = self.canvas.create_window(0, 0, window=self.commandsFrame, anchor='nw')
 
         self.indexFrame = tk.Frame(self.commandsFrame)
@@ -44,7 +46,7 @@ class ScriptFrame(tk.Frame):
         self.commandsFrame.columnconfigure(1, weight=1)
         self.indexFrame.grid(row=0, column=0, sticky='ns')
 
-        self.valueFrame = tk.Frame(self.commandsFrame)
+        self.valueFrame = tk.Frame(self.commandsFrame, bg=Config.light_text_color())
         self.valueFrame.columnconfigure(0, weight=1)
         # self.valueFrame.pack(side='right', anchor='w', fill='both', expand=True)
 
@@ -99,6 +101,9 @@ class ScriptFrame(tk.Frame):
         self.events = None
         self.active = False
 
+    def change_coord(self):
+        print('yay')
+
     def config(self):
         config = {'bg': '#000F08',
                   'fg': '#F4FFFD',
@@ -109,12 +114,12 @@ class ScriptFrame(tk.Frame):
         for button in self.btnFrame.winfo_children():
             button.config(config)
 
-    def configure_interior_window(self, event):
+    def configure_interior_window(self, _):
         size = (self.commandsFrame.winfo_reqwidth(), self.commandsFrame.winfo_reqheight())
         self.canvas.config(scrollregion='0 0 %s %s' % size)
         self.commandsFrame.bind('<Configure>', self.configure_interior_window)
 
-    def configure_canvas(self, event):
+    def configure_canvas(self, _):
         if self.commandsFrame.winfo_reqwidth() != self.canvas.winfo_reqwidth():
             self.canvas.itemconfigure(self.commandsFrameWindow, width=self.canvas.winfo_width())
         self.canvas.bind('<Configure>', self.configure_canvas)
@@ -125,10 +130,10 @@ class ScriptFrame(tk.Frame):
 
     def add_script(self, location, *args):
         num_btn = tk.Button(self.indexFrame, width=self.dimensions[0], text=len(self.actions) + 1, anchor='w', padx=6,
-                            bg='#ffffff', borderwidth=0, relief='flat')
+                            bg=Config.light_text_color(), borderwidth=0, relief='flat')
         num_btn.pack()
         self.indexes.append(num_btn)
-        new_script = sbf.ScriptButtonFrame(self.valueFrame, self.dimensions, args)
+        new_script = sBF.ScriptButtonFrame(self.valueFrame, self.dimensions, args)
         if location == 'bottom':
             new_script.grid(row=len(self.actions), sticky='nsew')
             self.actions.append(new_script)
@@ -232,7 +237,7 @@ class ScriptFrame(tk.Frame):
     def remove_flag(self):
         self.shiftFlag = False
 
-    def copy_event(self, event=None, recopy=False):
+    def copy_event(self, _=None, recopy=False):
         if not recopy:
             self.row_copy = []
             for i in range(self.active_rows[0], self.active_rows[1] + 1):
@@ -243,7 +248,7 @@ class ScriptFrame(tk.Frame):
                 copy.append(elem.copy())
             self.row_copy = copy
 
-    def paste_event(self, event):
+    def paste_event(self, _):
         if self.row_copy is None:
             messagebox.showinfo('Error!',
                                 'Select a list of actions and copy them using Ctrl + c before you can paste actions.'
@@ -270,7 +275,7 @@ class ScriptFrame(tk.Frame):
             self.actions[i].grid(row=i, sticky='nsew')
         self.copy_event(recopy=True)
 
-    def select_all_event(self, event):
+    def select_all_event(self, _):
         if len(self.actions) <= 0:
             return
         self.active_rows = [0, len(self.actions)-1]
@@ -305,7 +310,7 @@ class ScriptFrame(tk.Frame):
         self.actions.insert(rows[0], self.actions[rows[1]+1])
         del self.actions[rows[1]+2]
 
-    def delete(self, event=None, rows=None):
+    def delete(self, _=None, rows=None):
         if rows is None:
             rows = self.active_rows
             self.deselect_all()

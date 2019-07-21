@@ -32,8 +32,7 @@ class NavBar(tk.Frame):
         self.fileMenu.add_command(label="Exit", command=self.master.quit)
 
         self.editMenu = m.Menu(self.master)
-        self.editMenu.add_command(label='Placeholder', command=lambda: self.placeholder(self.editMenu, "Placeholder"))
-
+        self.editMenu.add_command(label='Change Screen Resolution', command=self.change_coord)
         self.viewMenu = m.Menu(self.master)
         self.viewMenu.add_command(label="Placeholder", command=lambda: self.placeholder(self.viewMenu, 'Placeholder'))
         self.viewMenu.add_command(label='Documentation', command=lambda: self.placeholder(self.viewMenu,
@@ -178,3 +177,6 @@ class NavBar(tk.Frame):
         x, y = pag.position()
         widget = self.winfo_containing(x, y)
         print("You clicked {}".format(button))
+
+    def change_coord(self):
+        print('yay')

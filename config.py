@@ -24,6 +24,11 @@ class Config:
         return '#86E7B8'
 
     @staticmethod
+    def grey_script_title_color():
+        # grey
+        return '#F0F0F0'
+
+    @staticmethod
     def main_bg_color():
         # grey/blue
         return '#465362'
@@ -40,7 +45,7 @@ class Config:
 
     @staticmethod
     def highlight_grey():
-        #dark grey
+        # dark grey
         return '#404040'
 
     @staticmethod

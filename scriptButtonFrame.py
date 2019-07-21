@@ -1,4 +1,5 @@
 import tkinter as tk
+from config import Config
 
 
 class ScriptButtonFrame(tk.Frame):
@@ -25,8 +26,8 @@ class ScriptButtonFrame(tk.Frame):
                 value = 'No' if self.values[i-1] is False else 'Yes'
             else:
                 value = self.values[i-1]
-            new_btn = tk.Button(self, text=value, anchor='w', padx=6, bg='#ffffff', borderwidth=0, relief='flat',
-                                font=('Helvetica', '9'))
+            new_btn = tk.Button(self, text=value, anchor='w', padx=6, borderwidth=0, relief='flat',
+                                font=Config.font_medium(), bg=Config.light_text_color())
             if i == 7:
                 self.commentButton = new_btn
             else:
@@ -47,11 +48,3 @@ class ScriptButtonFrame(tk.Frame):
 
     def copy(self):
         return ScriptButtonFrame(self.master, self.args[0], self.args[1])
-
-
-
-
-
-
-
-
