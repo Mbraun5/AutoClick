@@ -2,6 +2,7 @@ import pyautogui as pag
 import random
 import time
 from functools import wraps
+import pyautogui as pag
 
 
 def sleep_curs_back(func):
@@ -37,6 +38,7 @@ class Actions:
                          'End Dragging - Left Click Up': self.left_drag_up,
                          'Move Mouse': self.move_mouse,
                          'Move Mouse By Offset': self.move_mouse_offset,
+                         'Press Spacebar': self.spacebar,
                          }
 
         # 'Move Mouse By Offset': lambda *_: self.move_mouse_offset(*_, 'hey'), use lambda to pass additional arguments
@@ -187,3 +189,10 @@ class Actions:
             if self.exit_flag:
                 return
             pag.moveRel(x, y)
+
+    @sleep_curs_back
+    def spacebar(self, x, y, curs_Back, delay, repeat):
+        for i in range(repeat):
+            if self.exit_flag:
+                return
+        pag.press('space')
